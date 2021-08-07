@@ -8,9 +8,13 @@ $this->title = 'About';
 $this->params['breadcrumbs'][] = $this->title;
 // <code>?= __FILE__ ?</code>
 ?>
-<div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
+<article id="post-<?= $this->title ?>" class="post-<?= $this->title ?> page type-page status-publish hentry">
+    <header class="entry-header">
+        <h1 class="entry-title"><?= Html::encode($this->title) ?></h1>
+    </header><!-- .entry-header -->
 
-    <p>This is the About page. You may modify the following file to customize its content:</p>
+    <div class="entry-content">
+        <p>This is the About page. You may modify the following file to customize its content:</p>
+    </div><!-- .entry-content -->
 
-</div>
+</article><!-- #post-<?= $this->title ?> -->

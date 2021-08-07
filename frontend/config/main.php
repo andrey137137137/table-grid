@@ -15,6 +15,19 @@ return [
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
+        // 'assetManager' => [
+        //     'bundles' => [
+        //         'yii\bootstrap\BootstrapAsset' => [
+        //             'css' => [],
+        //         ],
+        //         'yii\bootstrap\BootstrapPluginAsset' => [
+        //             'js' => []
+        //         ],
+        //         'yii\web\JqueryAsset' => [
+        //             'js' => []
+        //         ],
+        //     ],
+        // ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
@@ -36,14 +49,11 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
-        */
     ],
     'params' => $params,
 ];
