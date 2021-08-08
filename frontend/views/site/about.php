@@ -10,11 +10,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <article id="post-<?= $this->title ?>" class="post-<?= $this->title ?> page type-page status-publish hentry">
     <header class="entry-header">
-        <h1 class="entry-title"><?= Html::encode($this->title) ?></h1>
+        <h1 class="entry-title">О НАС</h1>
     </header><!-- .entry-header -->
 
     <div class="entry-content">
-        <p>This is the About page. You may modify the following file to customize its content:</p>
+        <p>Наша компания, основаная в 2017, быстроразвивающаяся и преобретающая новых клиентов.</p>
     </div><!-- .entry-content -->
 
 </article><!-- #post-<?= $this->title ?> -->
