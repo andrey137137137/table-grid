@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
@@ -33,6 +34,24 @@ AppAsset::register($this);
     <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
 
     <header id="masthead" class="site-header" role="banner">
+      <div class="custom-header">
+        <div class="custom-header-media"></div>
+
+        <div class="site-branding">
+          <div class="wrap">
+
+            <div class="site-branding-text">
+              <?php if (Yii::$app->request->url == Yii::$app->homeUrl) : ?>
+                <h1 class="site-title"><a href="<?php echo Url::to([Yii::$app->homeUrl]); ?>" rel="home">Elena</a></h1>
+              <?php else : ?>
+                <p class="site-title"><a href="<?php echo Url::to([Yii::$app->homeUrl]); ?>" rel="home">Elena</a></p>
+              <?php endif; ?>
+
+              <p class="site-description">CREW Odessa</p>
+            </div><!-- .site-branding-text -->
+          </div><!-- .wrap -->
+        </div><!-- .site-branding -->
+      </div><!-- .custom-header -->
 
       <div class="navigation-top">
         <div class="wrap">
@@ -45,7 +64,7 @@ AppAsset::register($this);
             <div class="menu-main-container">
               <?php
               $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'Home', 'url' => [Yii::$app->homeUrl]],
                 ['label' => 'About', 'url' => ['/site/about']],
                 ['label' => 'Contact', 'url' => ['/site/contact']],
               ];

@@ -3577,7 +3577,7 @@ p > object:only-child {
   /* Navigation */
 
   .navigation-top {
-    /* bottom: 0; */
+    bottom: 0;
     font-size: 14px;
     font-size: 0.875rem;
     left: 0;
