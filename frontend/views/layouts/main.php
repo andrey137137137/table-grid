@@ -13,6 +13,8 @@ use yii\widgets\Menu;
 
 AppAsset::register($this);
 
+$isHomePage = $this->context->module->defaultRoute === $this->context->module->requestedRoute;
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -27,7 +29,7 @@ AppAsset::register($this);
   <?php $this->head() ?>
 </head>
 
-<body class="home page-template-default page page-id-8 wp-embed-responsive twentyseventeen-front-page has-header-image page-two-column colors-light">
+<body class="home page-template-default page page-id-8 wp-embed-responsive <?= $isHomePage ? 'twentyseventeen-front-page' : '' ?> has-header-image page-two-column colors-light">
   <?php $this->beginBody() ?>
 
   <div id="page" class="site">
@@ -35,16 +37,20 @@ AppAsset::register($this);
 
     <header id="masthead" class="site-header" role="banner">
       <div class="custom-header">
-        <div class="custom-header-media"></div>
+        <div class="custom-header-media">
+          <div id="wp-custom-header" class="wp-custom-header">
+            <img src="/img/cropped-isis_9357494_2949133_Medium.jpg" alt="Main Image" />
+          </div>
+        </div>
 
         <div class="site-branding">
           <div class="wrap">
 
             <div class="site-branding-text">
-              <?php if (Yii::$app->request->url == Yii::$app->homeUrl) : ?>
-                <h1 class="site-title"><a href="<?php echo Url::to([Yii::$app->homeUrl]); ?>" rel="home">Elena</a></h1>
+              <?php if ($isHomePage) : ?>
+                <h1 class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home">Elena</a></h1>
               <?php else : ?>
-                <p class="site-title"><a href="<?php echo Url::to([Yii::$app->homeUrl]); ?>" rel="home">Elena</a></p>
+                <p class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home">Elena</a></p>
               <?php endif; ?>
 
               <p class="site-description">CREW Odessa</p>
@@ -64,7 +70,7 @@ AppAsset::register($this);
             <div class="menu-main-container">
               <?php
               $menuItems = [
-                ['label' => 'Home', 'url' => [Yii::$app->homeUrl]],
+                ['label' => 'Home', 'url' => ['/site/index']],
                 ['label' => 'About', 'url' => ['/site/about']],
                 ['label' => 'Contact', 'url' => ['/site/contact']],
               ];
