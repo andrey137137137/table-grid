@@ -75,20 +75,6 @@ $isHomePage = $this->context->module->defaultRoute === $this->context->module->r
                 ['label' => 'Contact', 'url' => ['/site/contact']],
               ];
 
-              if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-              } else {
-                $menuItems[] = '<li>'
-                  . Html::beginForm(['/site/logout'], 'post')
-                  . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                  )
-                  . Html::endForm()
-                  . '</li>';
-              }
-
               echo Menu::widget([
                 'items' => $menuItems,
                 'options' => ['id' => 'top-menu', 'class' => 'menu'],
