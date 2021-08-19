@@ -16,7 +16,7 @@ use Yii;
  * @property string $ambarcation_date
  * @property string $salary
  *
- * @property VacancieRank $rank0
+ * @property VacancieRank $vacancieRank
  * @property VesselType $vesselType
  */
 class Vacancie extends \yii\db\ActiveRecord
@@ -62,11 +62,11 @@ class Vacancie extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Rank0]].
+     * Gets query for [[VacancieRank]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getRank0()
+    public function getVacancieRank()
     {
         return $this->hasOne(VacancieRank::className(), ['id' => 'rank']);
     }

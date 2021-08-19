@@ -7,13 +7,15 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 
 class AppController extends Controller
 {
   protected $modelClass;
+  protected $helperModels;
 
-  private $isCreateView;
+  private $isCreateView = false;
   private $modelNamespace = 'common\models';
 
   public function behaviors()
@@ -115,12 +117,38 @@ class AppController extends Controller
   private function renderView($model)
   {
     $view = $this->isCreateView ? 'create' : 'update';
+    $tempList = [];
+    $lists = [];
 
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect([$view, 'id' => $model->id]);
+    foreach ($this->helperModels as $i => $helperModel) {
+      $helperModelClass = $this->getModelClass($helperModel);
+      $tempList = $helperModelClass::find()
+        ->select(['id', 'name'])
+        ->orderBy('name')
+        ->asArray()
+        ->all();
+      $lists[$helperModel] = $this->getArray($tempList, 'name', 'id');
     }
 
-    return $this->render($view, compact('model'));
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      return $this->redirect([$view, 'id' => $model->id, 'lists' => $lists]);
+    }
+
+    return $this->render($view, [
+      'model' => $model,
+      'lists' => $lists,
+    ]);
+  }
+
+  protected function getArray($list, $label, $value)
+  {
+    $array = [];
+
+    foreach (ArrayHelper::map($list, $value, $label) as $key => $val) {
+      $array[$key] = $val;
+    }
+
+    return $array;
   }
 
   /**

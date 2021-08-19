@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Vacancie */
+/* @var $lists lists of id from other common\models */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,9 +13,10 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'rank')->textInput() ?>
+    <!-- ?= $form->field($model, 'rank')->textInput() ? -->
+    <?= $form->field($model, 'rank')->dropDownList($lists['VacancieRank']) ?>
 
-    <?= $form->field($model, 'vessel_type')->textInput() ?>
+    <?= $form->field($model, 'vessel_type')->dropDownList($lists['VesselType']) ?>
 
     <?= $form->field($model, 'build_year')->textInput(['maxlength' => true]) ?>
 
