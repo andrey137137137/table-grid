@@ -28,9 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'vessel_type',
             'build_year',
             'dwt',
-            //'contract_duration',
-            //'ambarcation_date',
-            //'salary',
+            'contract_duration',
+            'ambarcation_date',
+            'salary',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

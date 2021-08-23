@@ -1,5 +1,6 @@
 <?php
 
+use backend\ReasanikVue;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -9,7 +10,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="vacancie-form">
+<div id="minmaxForm" class="vacancie-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -18,7 +19,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vessel_type')->dropDownList($lists['VesselType']) ?>
 
-    <?= $form->field($model, 'build_year')->textInput(['maxlength' => true]) ?>
+    <!-- ?= $form->field($model, 'build_year')->textInput(['maxlength' => true]) ? -->
+    <?php ReasanikVue::renderMinMax($form, $model, 'build_year', '', 2000, 2030); ?>
 
     <?= $form->field($model, 'dwt')->textInput(['maxlength' => true]) ?>
 

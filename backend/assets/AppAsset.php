@@ -9,15 +9,17 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
-    public $css = [
-        'css/site.css',
-    ];
-    public $js = [
-    ];
-    public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-    ];
+  public $basePath = '@webroot';
+  public $baseUrl = '@web';
+  public $css = [
+    'css/site.css',
+  ];
+  public $js = [
+    'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js',
+    'js/minmax.js'
+  ];
+  public $depends = [
+    'yii\web\YiiAsset',
+    'yii\bootstrap\BootstrapAsset',
+  ];
 }
