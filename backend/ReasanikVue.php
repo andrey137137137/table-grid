@@ -6,6 +6,8 @@ use yii\helpers\Html;
 
 class ReasanikVue
 {
+  private static $marginLeft = 'margin-left: 10px';
+
   public static function beginFormRow()
   {
     return '<div class="form-group"><div class="row">';
@@ -31,33 +33,37 @@ class ReasanikVue
     echo $form->field($model, $name)->textInput(['maxlength' => true, 'v-model' => $name]);
 
     echo '<div style="display: flex; align-items: center; justify-content: space-between">';
-    self::renderInput('От', 'min_' . $name, $min);
-    self::renderInput('до', 'max_' . $name, $min, $max);
+    self::_renderCounter(false, 'min_' . $name, $min);
+    self::_renderCounter(true, 'max_' . $name, $min, $max);
 
     if ($postfix) {
-      echo '<span>' . $postfix . '</span>';
+      echo '<span style="' . self::$marginLeft . '">' . $postfix . '</span>';
     }
 
     echo '</div>';
   }
 
-  public static function renderInput($title, $name, $min = 0, $max = false)
+  private static function _renderCounter($isMax, $name, $min = 0, $max = false)
   {
-    $marginLeft = 'margin-left: 10px';
     $labelOptions = [
       'class' => 'form-label'
     ];
     $inputOptions = [
       'class' => 'form-control',
-      'style' => $marginLeft,
+      'style' => self::$marginLeft,
       'v-model.number' => $name,
       'min' => $min
     ];
 
+    if ($isMax) {
+      $labelOptions['style'] = self::$marginLeft;
+    }
+
     if ($max !== false) {
-      $labelOptions['style'] = $marginLeft;
       $inputOptions['max'] = $max;
     }
+
+    $title = $isMax ? 'до' : 'От';
 
     echo Html::label($title . ':', $name, $labelOptions);
     echo Html::input('number', $name, '', $inputOptions);
