@@ -23,8 +23,19 @@ use yii\widgets\ActiveForm;
   <?php
   ReasanikVue::renderMinMax($form, $model, 'build_year', '', 2000, 2030);
   ReasanikVue::renderMinMax($form, $model, 'dwt');
-  ReasanikVue::renderMinMax($form, $model, 'contract_duration', 'months');
-  ReasanikVue::renderMinMax($form, $model, 'salary', 'EURO');
+  ReasanikVue::renderMinMax($form, $model, 'contract_duration', 'months', 1, 12);
+  ReasanikVue::renderMinMax(
+    $form,
+    $model,
+    'salary',
+    [
+      'default' => 'USD',
+      'vModel' => 'currency',
+      'list' => ['USD' => 'USD', 'EURO' => 'EURO']
+    ],
+    500,
+    100000
+  );
   ?>
 
   <?= $form->field($model, 'ambarcation_date')->textInput(['maxlength' => true]) ?>

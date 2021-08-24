@@ -10,7 +10,7 @@ new Vue({
       max_contract_duration: 0,
       min_salary: 0,
       max_salary: 0,
-      currency: "EURO",
+      currency: "USD",
     };
   },
   computed: {

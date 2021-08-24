@@ -37,7 +37,20 @@ class ReasanikVue
     self::_renderCounter(true, 'max_' . $name, $min, $max);
 
     if ($postfix) {
-      echo '<span style="' . self::$marginLeft . '">' . $postfix . '</span>';
+      if (isset($postfix['list'])) {
+        echo Html::dropDownList(
+          $postfix['vModel'] . '_list',
+          $postfix['default'],
+          $postfix['list'],
+          [
+            'class' => 'form-control',
+            'style' => self::$marginLeft,
+            'v-model' => $postfix['vModel']
+          ]
+        );
+      } else {
+        echo '<span style="' . self::$marginLeft . '">' . $postfix . '</span>';
+      }
     }
 
     echo '</div>';

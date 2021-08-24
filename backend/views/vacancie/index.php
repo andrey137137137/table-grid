@@ -11,30 +11,30 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vacancie-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+  <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Vacancie', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+  <p>
+    <?= Html::a('Create Vacancie', ['create'], ['class' => 'btn btn-success']) ?>
+  </p>
 
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+  <?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+      ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'rank',
-            'vessel_type',
-            'build_year',
-            'dwt',
-            'contract_duration',
-            'ambarcation_date',
-            'salary',
+      'id',
+      'vacancieRank.name',
+      'vesselType.name',
+      'build_year',
+      'dwt',
+      'contract_duration',
+      'ambarcation_date',
+      'salary',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+      ['class' => 'yii\grid\ActionColumn'],
+    ],
+  ]); ?>
 
 
 </div>
