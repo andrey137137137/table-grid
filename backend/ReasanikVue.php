@@ -64,17 +64,18 @@ class ReasanikVue
     $inputOptions = [
       'class' => 'form-control',
       'style' => self::$marginLeft,
+      'ref' => $name,
       'v-model.number' => $name,
-      'min' => $min
+      // 'min' => $min
     ];
 
     if ($isMax) {
       $labelOptions['style'] = self::$marginLeft;
     }
 
-    if ($max !== false) {
-      $inputOptions['max'] = $max;
-    }
+    // if ($max !== false) {
+    //   $inputOptions['max'] = $max;
+    // }
 
     $title = $isMax ? 'до' : 'От';
 

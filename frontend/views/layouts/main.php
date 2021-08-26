@@ -71,6 +71,7 @@ $isHomePage = $this->context->module->defaultRoute === $this->context->module->r
               <?php
               $menuItems = [
                 ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'Vacancies', 'url' => ['/site/vacancies']],
                 ['label' => 'About', 'url' => ['/site/about']],
                 ['label' => 'Contact', 'url' => ['/site/contact']],
               ];
@@ -94,9 +95,6 @@ $isHomePage = $this->context->module->defaultRoute === $this->context->module->r
         <div class="wrap">
           <div id="primary" class="content-area">
             <main id="main" class="site-main" role="main">
-              <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-              ]) ?>
               <?= Alert::widget() ?>
               <?= $content ?>
             </main><!-- #main -->

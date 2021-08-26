@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\data\ActiveDataProvider;
+use common\models\Vacancie;
 use frontend\models\ContactForm;
 
 /**
@@ -23,6 +25,29 @@ class SiteController extends Controller
   }
 
   /**
+   * Displays vacancies page.
+   *
+   * @return mixed
+   */
+  public function actionVacancies()
+  {
+    // $model = Vacancie::find()
+    //   ->orderBy('rank')
+    //   // ->asArray()
+    //   ->all();
+    // // $list = $this->getArray($model, 'rank', 'id');
+
+    // return $this->render('vacancies', [
+    //   'model' => $model,
+    //   // 'list' => $list,
+    // ]);
+
+    $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
+    // var_dump($dataProvider);
+    return $this->render('vacancies', compact('dataProvider'));
+  }
+
+  /**
    * Displays contact page.
    *
    * @return mixed
@@ -30,6 +55,7 @@ class SiteController extends Controller
   public function actionContact()
   {
     $model = new ContactForm();
+
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
         Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');

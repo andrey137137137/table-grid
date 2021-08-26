@@ -120,7 +120,7 @@ class AppController extends Controller
     $tempList = [];
     $lists = [];
 
-    foreach ($this->helperModels as $i => $helperModel) {
+    foreach ($this->helperModels as $helperModel) {
       $helperModelClass = $this->getModelClass($helperModel);
       $tempList = $helperModelClass::find()
         ->select(['id', 'name'])

@@ -30,6 +30,7 @@ class VacancieRank extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 256],
+            [['name'], 'unique'],
         ];
     }
 

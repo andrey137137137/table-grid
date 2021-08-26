@@ -2,14 +2,14 @@ new Vue({
   el: "#minmaxForm",
   data: function () {
     return {
-      min_build_year: 0,
-      max_build_year: 0,
+      min_build_year: 2015,
+      max_build_year: 2021,
       min_dwt: 0,
-      max_dwt: 0,
-      min_contract_duration: 0,
-      max_contract_duration: 0,
-      min_salary: 0,
-      max_salary: 0,
+      max_dwt: 100000,
+      min_contract_duration: 1,
+      max_contract_duration: 9,
+      min_salary: 100,
+      max_salary: 99999,
       currency: "USD",
     };
   },
@@ -52,5 +52,21 @@ new Vue({
     getResultString: function (min, max, measure = "") {
       return min + "-" + max + (measure ? " " + measure : "");
     },
+    setMinMax: function (name) {
+      var minVarName = "min_" + name;
+      var maxVarName = "max_" + name;
+      var $minEl = this.$refs[minVarName];
+      var $maxEl = this.$refs[maxVarName];
+      $minEl.min = this[minVarName];
+      $minEl.max = this[maxVarName];
+      $maxEl.min = this[minVarName];
+      $maxEl.max = this[maxVarName];
+    },
+  },
+  mounted() {
+    this.setMinMax("build_year");
+    this.setMinMax("dwt");
+    this.setMinMax("contract_duration");
+    this.setMinMax("salary");
   },
 });
