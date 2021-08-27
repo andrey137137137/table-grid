@@ -17,15 +17,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= Html::a('Create Vacancie', ['create'], ['class' => 'btn btn-success']) ?>
   </p>
 
-
   <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
       ['class' => 'yii\grid\SerialColumn'],
 
       'id',
-      'vacancieRank.name',
-      'vesselType.name',
+      [
+        'attribute' => 'vacancieRank.name',
+        'label' => 'Rank'
+      ],
+      [
+        'attribute' => 'vesselType.name',
+        'label' => 'Type of Vessel'
+      ],
       'build_year',
       'dwt',
       'contract_duration',
@@ -35,6 +40,5 @@ $this->params['breadcrumbs'][] = $this->title;
       ['class' => 'yii\grid\ActionColumn'],
     ],
   ]); ?>
-
 
 </div>

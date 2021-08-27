@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use common\models\Vacancie;
 use frontend\models\ContactForm;
 
@@ -31,20 +32,23 @@ class SiteController extends Controller
    */
   public function actionVacancies()
   {
-    // $model = Vacancie::find()
-    //   ->orderBy('rank')
-    //   // ->asArray()
-    //   ->all();
-    // // $list = $this->getArray($model, 'rank', 'id');
+    $query = Vacancie::find()
+      ->orderBy('rank')
+      ->asArray()
+      ->all();
+    $vacancies = ArrayHelper::index($query, 'build_year', [
+      function ($element) {
+        return $element['rank'];
+      },
+      'vessel_type'
+    ]);
 
-    // return $this->render('vacancies', [
-    //   'model' => $model,
-    //   // 'list' => $list,
-    // ]);
+    return $this->render('vacancies', [
+      'vacancies' => $vacancies,
+    ]);
 
-    $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
-    // var_dump($dataProvider);
-    return $this->render('vacancies', compact('dataProvider'));
+    // $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
+    // return $this->render('vacancies', compact('dataProvider'));
   }
 
   /**
