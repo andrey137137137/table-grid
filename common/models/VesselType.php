@@ -52,6 +52,6 @@ class VesselType extends \yii\db\ActiveRecord
      */
     public function getVacancies()
     {
-        return $this->hasMany(Vacancie::className(), ['vessel_type' => 'id']);
+        return $this->hasMany(Vacancie::className(), ['vessel_type_id' => 'id']);
     }
 }

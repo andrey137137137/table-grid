@@ -13,7 +13,7 @@ use yii\web\NotFoundHttpException;
 class AppController extends Controller
 {
   protected $modelClass;
-  protected $helperModels;
+  protected $helperModels = [];
 
   private $isCreateView = false;
   private $modelNamespace = 'common\models';
@@ -61,9 +61,8 @@ class AppController extends Controller
    */
   public function actionIndex()
   {
-    $modelClass = $this->getModelClass();
+    $modelClass = $this->_getModelClass();
     $dataProvider = new ActiveDataProvider(['query' => $modelClass::find()]);
-
     return $this->render('index', compact('dataProvider'));
   }
 
@@ -74,7 +73,7 @@ class AppController extends Controller
    */
   public function actionView($id)
   {
-    return $this->render('view', ['model' => $this->findModel($id)]);
+    return $this->render('view', ['model' => $this->_findModel($id)]);
   }
 
   /**
@@ -85,9 +84,9 @@ class AppController extends Controller
   public function actionCreate()
   {
     $this->isCreateView = true;
-    $modelClass = $this->getModelClass();
+    $modelClass = $this->_getModelClass();
     $model = new $modelClass;
-    return $this->renderView($model);
+    return $this->_renderView($model);
   }
 
   /**
@@ -99,7 +98,7 @@ class AppController extends Controller
   public function actionUpdate($id)
   {
     $this->isCreateView = false;
-    return $this->renderView($this->findModel($id));
+    return $this->_renderView($this->_findModel($id));
   }
 
   /**
@@ -110,24 +109,24 @@ class AppController extends Controller
    */
   public function actionDelete($id)
   {
-    $this->findModel($id)->delete();
+    $this->_findModel($id)->delete();
     return $this->redirect(['index']);
   }
 
-  private function renderView($model)
+  private function _renderView($model)
   {
     $view = $this->isCreateView ? 'create' : 'update';
     $tempList = [];
     $lists = [];
 
     foreach ($this->helperModels as $helperModel) {
-      $helperModelClass = $this->getModelClass($helperModel);
+      $helperModelClass = $this->_getModelClass($helperModel);
       $tempList = $helperModelClass::find()
         ->select(['id', 'name'])
         ->orderBy('name')
         ->asArray()
         ->all();
-      $lists[$helperModel] = $this->getArray($tempList, 'name', 'id');
+      $lists[$helperModel] = $this->_getArray($tempList, 'name', 'id');
     }
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -140,7 +139,7 @@ class AppController extends Controller
     ]);
   }
 
-  protected function getArray($list, $label, $value)
+  private function _getArray($list, $label, $value)
   {
     $array = [];
 
@@ -158,9 +157,9 @@ class AppController extends Controller
    * @return Image the loaded model
    * @throws NotFoundHttpException if the model cannot be found
    */
-  private function findModel($id)
+  private function _findModel($id)
   {
-    $modelClass = $this->getModelClass();
+    $modelClass = $this->_getModelClass();
 
     if (($model = $modelClass::findOne($id)) === null) {
       throw new NotFoundHttpException('The requested page does not exist.');
@@ -169,7 +168,7 @@ class AppController extends Controller
     return $model;
   }
 
-  private function getModelClass($className = false)
+  private function _getModelClass($className = false)
   {
     return $this->modelNamespace . '\\' . (!$className ? $this->modelClass : $className);
   }

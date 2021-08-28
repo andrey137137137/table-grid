@@ -52,6 +52,6 @@ class VacancieRank extends \yii\db\ActiveRecord
      */
     public function getVacancies()
     {
-        return $this->hasMany(Vacancie::className(), ['rank' => 'id']);
+        return $this->hasMany(Vacancie::className(), ['rank_id' => 'id']);
     }
 }

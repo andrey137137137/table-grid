@@ -105,7 +105,8 @@ function rsRenderRowspanTd($items, $field, $isFirstLevel = true)
       ],
       'showPageSummary' => false
     ]); ? -->
-    <table class="table table-striped table-bordered">
+    <?= var_dump($counters) ?>
+    <table class="table table-striped table-bordered" border="1">
       <thead>
         <tr>
           <th>Rank</th>
@@ -129,20 +130,19 @@ function rsRenderRowspanTd($items, $field, $isFirstLevel = true)
                 <td><?= $buildYear ?></td>
 
                 <?php foreach ($items as $attr => $field) :
-                  if ($attr == 'id' || $attr == 'rank' || $attr == 'vessel_type' || $attr == 'build_year') :
+                  if ($attr == 'id' || $attr == 'rank_id' || $attr == 'vessel_type_id' || $attr == 'build_year') :
                     continue;
                   endif; ?>
                   <td><?= $attr ?>: <?= $field ?></td>
-            <?php endforeach;
-
+                <?php endforeach; ?>
+          </tr> <?php
               endforeach;
 
               decCounter(false);
-            endforeach; ?>
+            endforeach;
 
-          </tr>
-        <?php decCounter();
-        endforeach; ?>
+            decCounter();
+          endforeach; ?>
       </tbody>
     </table>
   </div><!-- .entry-content -->

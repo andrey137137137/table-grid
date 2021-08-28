@@ -33,19 +33,33 @@ class SiteController extends Controller
   public function actionVacancies()
   {
     $query = Vacancie::find()
-      ->orderBy('rank')
+      ->orderBy('rank_id')
       ->asArray()
       ->all();
     $vacancies = ArrayHelper::index($query, 'build_year', [
       function ($element) {
-        return $element['rank'];
+        return $element['rank_id'];
       },
-      'vessel_type'
+      'vessel_type_id'
     ]);
+    $counters = [];
 
-    return $this->render('vacancies', [
-      'vacancies' => $vacancies,
-    ]);
+    foreach ($vacancies as $rankId => $topItems) {
+      $counters[$rankId] = count($topItems);
+      $counter = 0;
+
+      foreach ($topItems as $vesselTypeId => $bottomItems) {
+        $key = $rankId . ' ' . $vesselTypeId;
+        $counters[$key] = count($bottomItems);
+        $counter += $counters[$key];
+      }
+
+      if ($counter > $counters[$rankId]) {
+        $counters[$rankId] = $counter;
+      }
+    }
+
+    return $this->render('vacancies', compact('vacancies', 'counters'));
 
     // $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
     // return $this->render('vacancies', compact('dataProvider'));

@@ -23,14 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
       ['class' => 'yii\grid\SerialColumn'],
 
       'id',
-      [
-        'attribute' => 'vacancieRank.name',
-        'label' => 'Rank'
-      ],
-      [
-        'attribute' => 'vesselType.name',
-        'label' => 'Type of Vessel'
-      ],
+      ['attribute' => 'rank.name', 'label' => 'Rank'],
+      ['attribute' => 'vesselType.name', 'label' => 'Type of Vessel'],
       'build_year',
       'dwt',
       'contract_duration',

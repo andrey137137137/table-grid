@@ -14,10 +14,10 @@ use yii\widgets\ActiveForm;
 
   <?php $form = ActiveForm::begin(); ?>
 
-  <!-- ?= $form->field($model, 'rank')->textInput() ? -->
-  <?= $form->field($model, 'rank')->dropDownList($lists['VacancieRank']) ?>
+  <!-- ?= $form->field($model, 'rank_id')->textInput() ? -->
+  <?= $form->field($model, 'rank_id')->dropDownList($lists['VacancieRank']) ?>
 
-  <?= $form->field($model, 'vessel_type')->dropDownList($lists['VesselType']) ?>
+  <?= $form->field($model, 'vessel_type_id')->dropDownList($lists['VesselType']) ?>
 
   <!-- ?= $form->field($model, 'build_year')->textInput(['maxlength' => true]) ? -->
   <?php

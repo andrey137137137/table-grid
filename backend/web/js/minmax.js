@@ -2,6 +2,8 @@ new Vue({
   el: "#minmaxForm",
   data: function () {
     return {
+      minPrefix: "min_",
+      maxPrefix: "max_",
       min_build_year: 2015,
       max_build_year: 2021,
       min_dwt: 0,
@@ -52,11 +54,50 @@ new Vue({
     getResultString: function (min, max, measure = "") {
       return min + "-" + max + (measure ? " " + measure : "");
     },
-    setMinMax: function (name) {
-      var minVarName = "min_" + name;
-      var maxVarName = "max_" + name;
+    getSplitInputValue: function (str, index) {
+      var array = str.split("-");
+
+      switch (index) {
+        case 0:
+          return array[0].trim();
+        default:
+          var rest = array[1].split(" ");
+
+          if (index == 1) {
+            return rest[0].trim();
+          }
+
+          return rest[1].trim();
+      }
+    },
+    setCounter: function (inputName, inputValue, splitIndex = 0) {
+      var counterPrefix = !splitIndex ? this.minPrefix : this.maxPrefix;
+
+      if (inputValue) {
+        this[counterPrefix + inputName] = this.getSplitInputValue(
+          inputValue,
+          splitIndex
+        );
+
+        if (inputName == "salary" && splitIndex) {
+          this.currency = this.getSplitInputValue(inputValue, 2);
+        }
+      } else if (splitIndex) {
+        this[this.maxPrefix + inputName] = this.getValidatedMax(
+          this[this.minPrefix + inputName],
+          this[this.maxPrefix + inputName]
+        );
+      }
+    },
+    setMinMax: function (inputName) {
+      var inputValue = this.$refs[inputName].dataset.value;
+      console.log(inputValue);
+      var minVarName = this.minPrefix + inputName;
+      var maxVarName = this.maxPrefix + inputName;
       var $minEl = this.$refs[minVarName];
       var $maxEl = this.$refs[maxVarName];
+      this.setCounter(inputName, inputValue);
+      this.setCounter(inputName, inputValue, 1);
       $minEl.min = this[minVarName];
       $minEl.max = this[maxVarName];
       $maxEl.min = this[minVarName];

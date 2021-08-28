@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Vacancie */
 
-$this->title = $model->id;
+$this->title = $model->rank->name . ' - ' . $model->salary;
 $this->params['breadcrumbs'][] = ['label' => 'Vacancies', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -30,8 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
     'model' => $model,
     'attributes' => [
       'id',
-      'vacancieRank.name',
-      'vesselType.name',
+      // ['attribute' => 'rank.name', 'label' => 'Rank'],
+      ['attribute' => 'vesselType.name', 'label' => 'Type of Vessel'],
       'build_year',
       'dwt',
       'contract_duration',
