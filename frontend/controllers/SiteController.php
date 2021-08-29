@@ -49,9 +49,13 @@ class SiteController extends Controller
       $counter = 0;
 
       foreach ($topItems as $vesselTypeId => $bottomItems) {
-        $key = $rankId . ' ' . $vesselTypeId;
-        $counters[$key] = count($bottomItems);
-        $counter += $counters[$key];
+        $count = count($bottomItems);
+
+        if ($count > 1) {
+          $counters[$rankId . '_' . $vesselTypeId] = $count;
+        }
+
+        $counter += $count;
       }
 
       if ($counter > $counters[$rankId]) {

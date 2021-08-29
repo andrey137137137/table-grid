@@ -1,5 +1,7 @@
 <?php
 
+use frontend\ReasanikVue;
+
 /* @var $this yii\web\View */
 
 // use yii\grid\GridView;
@@ -7,77 +9,7 @@
 
 $this->title = 'Vacancies';
 $this->params['breadcrumbs'][] = $this->title;
-
-$firstRowSpanCounter = 0;
-$secondRowSpanCounter = 0;
-
-function getValidCounter($counter)
-{
-  $counter--;
-  return $counter > 0 ? $counter : 0;
-}
-
-function decCounter($isFirstLevel = true)
-{
-  global $firstRowSpanCounter, $secondRowSpanCounter;
-
-  $counter = $isFirstLevel
-    ? $firstRowSpanCounter
-    : $secondRowSpanCounter;
-
-  if ($isFirstLevel) {
-    $firstRowSpanCounter = getValidCounter($counter);
-  } else {
-    $secondRowSpanCounter = getValidCounter($counter);
-  }
-}
-
-function rsRenderRowspanTd($items, $field, $isFirstLevel = true)
-{
-  global $firstRowSpanCounter, $secondRowSpanCounter;
-
-  if ($isFirstLevel && $firstRowSpanCounter) {
-    return;
-  }
-
-  if ($secondRowSpanCounter) {
-    return;
-  }
-
-  $itemsCount = count($items);
-
-  if ($isFirstLevel) {
-    foreach ($items as $subItems) {
-      $subItemsCount = count($subItems);
-
-      if ($subItemsCount > $itemsCount) {
-        $itemsCount = $subItemsCount;
-      }
-      break;
-    }
-  }
-
-  if ($itemsCount == 1) : ?>
-
-    <td> <?= $field ?> </td>
-
-  <?php
-    return;
-  endif;
-
-  if ($isFirstLevel) {
-    $firstRowSpanCounter = $itemsCount;
-  } else {
-    $secondRowSpanCounter = $itemsCount;
-  }
-  ?>
-
-  <td rowspan="<?= $itemsCount ?>">
-    <?= $field ?>
-  </td>
-
-<?php
-}
+ReasanikVue::$counters = $counters;
 
 ?>
 <article id="post-<?= $this->title ?>" class="post-<?= $this->title ?> page type-page status-publish hentry">
@@ -105,7 +37,7 @@ function rsRenderRowspanTd($items, $field, $isFirstLevel = true)
       ],
       'showPageSummary' => false
     ]); ? -->
-    <?= var_dump($counters) ?>
+    <?= var_dump(ReasanikVue::$counters) ?>
     <table class="table table-striped table-bordered" border="1">
       <thead>
         <tr>
@@ -119,30 +51,30 @@ function rsRenderRowspanTd($items, $field, $isFirstLevel = true)
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($vacancies as $rankId => $topItems) : ?>
-          <tr>
-            <?php rsRenderRowspanTd($topItems, $rankId);
+        <?php
+        foreach ($vacancies as $rankId => $topItems) :
+          ReasanikVue::renderRowSpanTd($rankId);
 
-            foreach ($topItems as $vesselId => $bottomItems) :
-              rsRenderRowspanTd($bottomItems, $vesselId, false);
+          foreach ($topItems as $vesselTypeId => $bottomItems) :
+            ReasanikVue::renderRowSpanTd($rankId . '_' . $vesselTypeId, $vesselTypeId, false);
 
-              foreach ($bottomItems as $buildYear => $items) : ?>
-                <td><?= $buildYear ?></td>
+            foreach ($bottomItems as $buildYear => $items) :
+              ReasanikVue::renderThirdTd($buildYear);
 
-                <?php foreach ($items as $attr => $field) :
-                  if ($attr == 'id' || $attr == 'rank_id' || $attr == 'vessel_type_id' || $attr == 'build_year') :
-                    continue;
-                  endif; ?>
-                  <td><?= $attr ?>: <?= $field ?></td>
-                <?php endforeach; ?>
-          </tr> <?php
+              foreach ($items as $attr => $field) :
+                ReasanikVue::renderTd($attr, $field);
               endforeach;
-
-              decCounter(false);
+        ?>
+              </tr>
+        <?php
             endforeach;
 
-            decCounter();
-          endforeach; ?>
+            ReasanikVue::decCounter(false);
+          endforeach;
+
+          ReasanikVue::decCounter();
+        endforeach;
+        ?>
       </tbody>
     </table>
   </div><!-- .entry-content -->
