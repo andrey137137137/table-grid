@@ -8,6 +8,13 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Vacancie */
 /* @var $lists lists of id from other common\models */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerJsFile(
+  'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js',
+  ['position' => $this::POS_HEAD]
+);
+$this->registerJsFile('@web/js/minmax.js', ['position' => $this::POS_END]);
+
 ?>
 
 <div id="minmaxForm" class="vacancie-form">

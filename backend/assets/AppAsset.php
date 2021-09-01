@@ -14,10 +14,10 @@ class AppAsset extends AssetBundle
   public $css = [
     'css/site.css',
   ];
-  public $js = [
-    'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js',
-    'js/minmax.js'
-  ];
+  // public $js = [
+  //   'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js',
+  //   'js/minmax.js'
+  // ];
   public $depends = [
     'yii\web\YiiAsset',
     'yii\bootstrap\BootstrapAsset',

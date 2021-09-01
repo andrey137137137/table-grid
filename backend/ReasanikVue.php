@@ -16,7 +16,7 @@ class ReasanikVue
       'maxlength' => true,
       'data-value' => $inputValue,
       'ref' => $name,
-      'v-model' => $name
+      'v-model.trim' => $name
     ]);
 
     echo '<div style="display: flex; align-items: center; justify-content: space-between">';
