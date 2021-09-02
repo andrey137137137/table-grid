@@ -16,7 +16,9 @@ class ReasanikVue
       'maxlength' => true,
       'data-value' => $inputValue,
       'ref' => $name,
-      'v-model.trim' => $name
+      // 'v-model.trim' => $name,
+      ':value' => $name,
+      '@blur' => $name . ' = $event.target.value',
     ]);
 
     echo '<div style="display: flex; align-items: center; justify-content: space-between">';

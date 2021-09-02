@@ -1,61 +1,79 @@
+var inputs = [
+  {
+    name: "build_year",
+    min: 2006,
+    max: 2021,
+  },
+  {
+    name: "dwt",
+    min: 0,
+    max: 100000,
+  },
+  {
+    name: "contract_duration",
+    min: 2,
+    max: 9,
+  },
+  {
+    name: "salary",
+    min: 100,
+    max: 99999,
+  },
+];
+var dataProps = {
+  minPrefix: "min_",
+  maxPrefix: "max_",
+  currency: "USD",
+};
+var computedProps = {};
+
+function getPrefixedName(inputName, prefix) {
+  prefix = prefix ? dataProps.maxPrefix : dataProps.minPrefix;
+  return prefix + inputName;
+}
+
+function getComputedProp(inputName, postfix) {
+  postfix = postfix || "";
+  return {
+    get: function () {
+      this[getPrefixedName(inputName, true)] = this.getValidatedMax(
+        this[getPrefixedName(inputName)],
+        this[getPrefixedName(inputName, true)]
+      );
+      return this.getResultString(
+        this[getPrefixedName(inputName)],
+        this[getPrefixedName(inputName, true)],
+        inputName == "salary" ? this.currency : postfix
+      );
+    },
+    set: function (newValue) {
+      this.setMinMax(inputName, newValue);
+    },
+  };
+}
+
+inputs.forEach(function (obj) {
+  var inputName = obj.name;
+  dataProps[getPrefixedName(inputName)] = obj.min;
+  dataProps[getPrefixedName(inputName, true)] = obj.max;
+  computedProps[inputName] = getComputedProp(
+    inputName,
+    inputName == "contract_duration" ? "months" : ""
+  );
+});
+
+console.log(dataProps);
+console.log(computedProps);
+
 new Vue({
   el: "#minmaxForm",
   data: function () {
-    return {
-      minPrefix: "min_",
-      maxPrefix: "max_",
-      min_build_year: 2006,
-      max_build_year: 2021,
-      min_dwt: 0,
-      max_dwt: 100000,
-      min_contract_duration: 2,
-      max_contract_duration: 9,
-      min_salary: 100,
-      max_salary: 99999,
-      currency: "USD",
-    };
+    return dataProps;
   },
-  computed: {
-    build_year: {
-      get: function () {
-        this.max_build_year = this.getValidatedMax(
-          this.min_build_year,
-          this.max_build_year
-        );
-        return this.getResultString(this.min_build_year, this.max_build_year);
-      },
-      set: function (newValue) {
-        this.setMinMax("build_year", newValue);
-      },
-    },
-    dwt: function () {
-      this.max_dwt = this.getValidatedMax(this.min_dwt, this.max_dwt);
-      return this.getResultString(this.min_dwt, this.max_dwt);
-    },
-    contract_duration: function () {
-      this.max_contract_duration = this.getValidatedMax(
-        this.min_contract_duration,
-        this.max_contract_duration
-      );
-      return this.getResultString(
-        this.min_contract_duration,
-        this.max_contract_duration,
-        "months"
-      );
-    },
-    salary: function () {
-      this.max_salary = this.getValidatedMax(this.min_salary, this.max_salary);
-      return this.getResultString(
-        this.min_salary,
-        this.max_salary,
-        this.currency
-      );
-    },
-  },
+  computed: computedProps,
   methods: {
     getValidatedMax: function (min, max) {
       return min > max ? min + 1 : max;
-      // return min > max ? Number(min) + 1 : max;
     },
     getResultString: function (min, max, measure = "") {
       var minMaxStr = min == max ? min : min + "-" + max;
@@ -136,9 +154,9 @@ new Vue({
     },
   },
   mounted() {
-    this.setMinMax("build_year");
-    this.setMinMax("dwt");
-    this.setMinMax("contract_duration");
-    this.setMinMax("salary");
+    var $vm = this;
+    inputs.forEach(function (obj) {
+      $vm.setMinMax(obj.name);
+    });
   },
 });
