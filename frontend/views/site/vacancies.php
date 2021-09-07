@@ -9,15 +9,17 @@ use frontend\ReasanikVue;
 
 $this->title = 'Vacancies';
 $this->params['breadcrumbs'][] = $this->title;
+ReasanikVue::$firstColumn = $ranks;
+ReasanikVue::$secondColumn = $vesselTypes;
 ReasanikVue::$counters = $counters;
 
 ?>
 <article id="post-<?= $this->title ?>" class="post-<?= $this->title ?> page type-page status-publish hentry">
-  <header class="entry-header">
-    <h1 class="entry-title">ВАКАНСИИ</h1>
-  </header><!-- .entry-header -->
+  <!-- <header class="entry-header"> -->
+  <!-- <h1 class="entry-title">ВАКАНСИИ</h1> -->
+  <!-- </header>.entry-header -->
 
-  <div class="entry-content">
+  <div class="entry-content" style="float: none">
     <!-- ?= GridView::widget([
       'dataProvider' => $dataProvider,
       'columns' => [
@@ -37,8 +39,15 @@ ReasanikVue::$counters = $counters;
       ],
       'showPageSummary' => false
     ]); ? -->
-    <?= var_dump(ReasanikVue::$counters) ?>
-    <table class="table table-striped table-bordered" border="1">
+
+    <?php foreach (ReasanikVue::$counters as $rsCounterId => $rsCounter) { ?>
+      <b><?= $rsCounterId ?></b> = <?= $rsCounter ?><br />
+    <?php } ?>
+
+    <br />
+
+    <!-- <div class="grid-view"> -->
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th>Rank</th>
@@ -64,19 +73,17 @@ ReasanikVue::$counters = $counters;
               foreach ($items as $attr => $field) :
                 ReasanikVue::renderTd($attr, $field);
               endforeach;
-        ?>
-              </tr>
-        <?php
+
+              ReasanikVue::renderCloseTr();
             endforeach;
 
-            ReasanikVue::decCounter(false);
+            ReasanikVue::decCounter();
           endforeach;
-
-          ReasanikVue::decCounter();
         endforeach;
         ?>
       </tbody>
     </table>
+    <!-- </div> -->
   </div><!-- .entry-content -->
 
 </article><!-- #post-<?= $this->title ?> -->

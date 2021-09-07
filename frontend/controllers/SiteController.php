@@ -34,7 +34,7 @@ class SiteController extends Controller
   {
     $query = Vacancie::find()
       ->orderBy('rank_id')
-      ->asArray()
+      // ->asArray()
       ->all();
     $vacancies = ArrayHelper::index($query, 'build_year', [
       function ($element) {
@@ -42,6 +42,8 @@ class SiteController extends Controller
       },
       'vessel_type_id'
     ]);
+    $ranks = ArrayHelper::map($query, 'rank_id', 'rank.name');
+    $vesselTypes = ArrayHelper::map($query, 'vessel_type_id', 'vesselType.name');
     $counters = [];
 
     foreach ($vacancies as $rankId => $topItems) {
@@ -63,7 +65,7 @@ class SiteController extends Controller
       }
     }
 
-    return $this->render('vacancies', compact('vacancies', 'counters'));
+    return $this->render('vacancies', compact('vacancies', 'ranks', 'vesselTypes', 'counters'));
 
     // $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
     // return $this->render('vacancies', compact('dataProvider'));

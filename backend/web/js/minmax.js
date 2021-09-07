@@ -101,7 +101,7 @@ new Vue({
         case 0:
           return this.getCounterValue(array[0]);
         default:
-          var rest = array[length - 1].split(" ");
+          var rest = array[length - 1].trim().split(" ");
 
           if (index == 1) {
             return this.getCounterValue(rest[0]);

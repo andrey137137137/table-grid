@@ -4,46 +4,49 @@ namespace frontend;
 
 class ReasanikVue
 {
+  public static $firstColumn = [];
+  public static $secondColumn = [];
   public static $counters = [];
 
-  private static $_topKey = '';
-  private static $_bottomKey = '';
-  private static $_firstRowSpanCounter = 0;
-  private static $_secondRowSpanCounter = 0;
+  private static $_isEven = false;
+  private static $_firstColumnKey = '';
+  private static $_secondColumnKey = '';
+  private static $_firstColumnCounter = 0;
+  private static $_secondColumnCounter = 0;
   private static $_openTd = '<td align="center">';
+  private static $_closeTd = '</td>';
 
-  public static function renderRowSpanTd($key, $value = false, $isFirstLevel = true)
+  public static function renderRowSpanTd($key, $value = false, $isFirstColumn = true)
   {
-    if ($isFirstLevel && self::$_firstRowSpanCounter) {
+    if ($isFirstColumn && self::$_firstColumnCounter) {
       return;
     }
 
-    if (self::$_secondRowSpanCounter) {
+    if (self::$_secondColumnCounter) {
       return;
     }
 
-    if ($isFirstLevel) {
-      self::$_topKey = $key;
+    if ($isFirstColumn) {
+      self::$_firstColumnKey = $key;
     } else {
-      self::$_bottomKey = $key;
+      self::$_secondColumnKey = $key;
     }
 
     $itemsCount = self::_getCount($key);
-
-    if ($isFirstLevel) {
-      self::$_firstRowSpanCounter = $itemsCount;
-    } else {
-      self::$_secondRowSpanCounter = $itemsCount;
-    }
-
     $calcValue = $value === false ? $key : $value;
 
-    echo self::_getRowSpanTd($calcValue, $itemsCount, $isFirstLevel);
+    if ($isFirstColumn) {
+      self::$_firstColumnCounter = $itemsCount;
+    } else {
+      self::$_secondColumnCounter = $itemsCount;
+    }
+
+    echo self::_getRowSpanTd($calcValue, $itemsCount, $isFirstColumn);
   }
 
   public static function renderThirdTd($value)
   {
-    echo self::_getOpenTr(false, self::$_bottomKey) . self::$_openTd . $value . '</td>';
+    echo self::_getOpenTr(false, self::$_secondColumnKey) . self::$_openTd . $value . self::$_closeTd;
   }
 
   public static function renderTd($key, $value)
@@ -56,39 +59,52 @@ class ReasanikVue
         return;
     }
 
-    echo self::$_openTd . $key . ': ' . $value . '</td>';
-  }
-
-  public static function decCounter($isFirstLevel = true)
-  {
-    $counter = $isFirstLevel
-      ? self::$_firstRowSpanCounter
-      : self::$_secondRowSpanCounter;
-
-    if ($isFirstLevel) {
-      self::$_firstRowSpanCounter = self::_getValidCounter($counter);
+    if ($key != 'salary') {
+      echo self::$_openTd . $value . self::$_closeTd;
     } else {
-      self::$_secondRowSpanCounter = self::_getValidCounter($counter);
+      echo self::$_openTd . 'counter <br />' . self::$_firstColumnCounter . ' - ' . self::$_secondColumnCounter . self::$_closeTd;
     }
   }
 
-  private static function _getRowSpanTd($value, $rowSpan, $isFirstLevel)
+  public static function renderCloseTr()
   {
-    return self::_getOpenTr($isFirstLevel)
-      . '<td align="center"' . ($rowSpan > 1 ? ' rowspan="' . $rowSpan . '"' : '') . '>'
-      . $value
-      . '</td>';
+    echo '</tr>';
   }
 
-  private static function _getOpenTr($isFirstLevel, $key = '')
+  public static function decCounter()
   {
-    $openTr = '<tr>';
+    self::$_firstColumnCounter = self::_getValidDecCounter(
+      self::$_firstColumnCounter
+    );
+    self::$_secondColumnCounter = self::_getValidDecCounter(
+      self::$_secondColumnCounter
+    );
 
-    if ($isFirstLevel) {
+    if (!self::$_firstColumnCounter) {
+      self::$_isEven = !self::$_isEven;
+    }
+  }
+
+  private static function _getRowSpanTd($value, $rowSpan, $isFirstColumn)
+  {
+    $calcValue = $isFirstColumn
+      ? self::$firstColumn[$value]
+      : self::$secondColumn[$value];
+    return self::_getOpenTr($isFirstColumn)
+      . '<td align="center"' . ($rowSpan > 1 ? ' rowspan="' . $rowSpan . '"' : '') . '>'
+      . $calcValue
+      . self::$_closeTd;
+  }
+
+  private static function _getOpenTr($isFirstColumn, $key = '')
+  {
+    $openTr = '<tr' . (!self::$_isEven ? ' style="background: #f9f9f9"' : '') . '>';
+
+    if ($isFirstColumn) {
       return $openTr;
     }
 
-    $counter = !$key ? self::$_firstRowSpanCounter : self::$_secondRowSpanCounter;
+    $counter = !$key ? self::$_firstColumnCounter : self::$_secondColumnCounter;
 
     if (self::_getCount($key) > $counter) {
       return $openTr;
@@ -97,11 +113,11 @@ class ReasanikVue
 
   private static function _getCount($key = '')
   {
-    $calcKey = !$key ? self::$_topKey : $key;
+    $calcKey = !$key ? self::$_firstColumnKey : $key;
     return isset(self::$counters[$calcKey]) ? self::$counters[$calcKey] : 1;
   }
 
-  private static function _getValidCounter($counter)
+  private static function _getValidDecCounter($counter)
   {
     $counter--;
     return $counter > 0 ? $counter : 0;
