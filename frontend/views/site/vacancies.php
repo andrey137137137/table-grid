@@ -9,8 +9,8 @@ use frontend\ReasanikVue;
 
 $this->title = 'Vacancies';
 $this->params['breadcrumbs'][] = $this->title;
-ReasanikVue::$firstColumn = $ranks;
-ReasanikVue::$secondColumn = $vesselTypes;
+ReasanikVue::$firstColumn = $firstColumn;
+ReasanikVue::$secondColumn = $secondColumn;
 ReasanikVue::$counters = $counters;
 
 ?>
