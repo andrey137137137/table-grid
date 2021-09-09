@@ -1,14 +1,15 @@
 <?php
 
-use frontend\ReasanikVue;
-
 /* @var $this yii\web\View */
+
+use frontend\ReasanikVue;
 
 // use yii\grid\GridView;
 // use kartik\grid\GridView;
 
 $this->title = 'Vacancies';
 $this->params['breadcrumbs'][] = $this->title;
+
 ReasanikVue::$firstColumn = $firstColumn;
 ReasanikVue::$secondColumn = $secondColumn;
 ReasanikVue::$counters = $counters;
@@ -46,44 +47,44 @@ ReasanikVue::$counters = $counters;
 
     <br />
 
-    <!-- <div class="grid-view"> -->
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Type of Vessel </th>
-          <th>Build Year</th>
-          <th>Dwt</th>
-          <th>Contract Duration</th>
-          <th>Ambarcation Date</th>
-          <th>Salary</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        foreach ($vacancies as $rankId => $topItems) :
-          ReasanikVue::renderRowSpanTd($rankId);
+    <div class="grid-view">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Type of Vessel </th>
+            <th>Build Year</th>
+            <th>Dwt</th>
+            <th>Contract Duration</th>
+            <th>Ambarcation Date</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          foreach ($vacancies as $rankId => $topItems) :
+            ReasanikVue::renderRowSpanTd($rankId);
 
-          foreach ($topItems as $vesselTypeId => $bottomItems) :
-            ReasanikVue::renderRowSpanTd($rankId . '_' . $vesselTypeId, $vesselTypeId, false);
+            foreach ($topItems as $vesselTypeId => $bottomItems) :
+              ReasanikVue::renderRowSpanTd($rankId . '_' . $vesselTypeId, $vesselTypeId, false);
 
-            foreach ($bottomItems as $buildYear => $items) :
-              ReasanikVue::renderThirdTd($buildYear);
+              foreach ($bottomItems as $buildYear => $items) :
+                ReasanikVue::renderThirdTd($buildYear);
 
-              foreach ($items as $attr => $field) :
-                ReasanikVue::renderTd($attr, $field);
+                foreach ($items as $attr => $field) :
+                  ReasanikVue::renderTd($attr, $field);
+                endforeach;
+
+                ReasanikVue::renderCloseTr();
               endforeach;
 
-              ReasanikVue::renderCloseTr();
+              ReasanikVue::decCounter();
             endforeach;
-
-            ReasanikVue::decCounter();
           endforeach;
-        endforeach;
-        ?>
-      </tbody>
-    </table>
-    <!-- </div> -->
+          ?>
+        </tbody>
+      </table>
+    </div>
   </div><!-- .entry-content -->
 
 </article><!-- #post-<?= $this->title ?> -->

@@ -2,6 +2,8 @@
 
 namespace frontend;
 
+use yii\helpers\Html;
+
 class ReasanikVue
 {
   public static $firstColumn = [];
@@ -46,7 +48,10 @@ class ReasanikVue
 
   public static function renderThirdTd($value)
   {
-    echo self::_getOpenTr(false, self::$_secondColumnKey) . self::$_openTd . $value . self::$_closeTd;
+    echo self::_getOpenTr(false, self::$_secondColumnKey)
+      . self::$_openTd
+      . Html::encode($value)
+      . self::$_closeTd;
   }
 
   public static function renderTd($key, $value)
@@ -60,9 +65,13 @@ class ReasanikVue
     }
 
     if ($key != 'salary') {
-      echo self::$_openTd . $value . self::$_closeTd;
+      echo self::$_openTd . Html::encode($value) . self::$_closeTd;
     } else {
-      echo self::$_openTd . 'counter <br />' . self::$_firstColumnCounter . ' - ' . self::$_secondColumnCounter . self::$_closeTd;
+      echo self::$_openTd . 'counter <br />'
+        . Html::encode(self::$_firstColumnCounter)
+        . ' - '
+        . Html::encode(self::$_secondColumnCounter)
+        . self::$_closeTd;
     }
   }
 
@@ -87,12 +96,13 @@ class ReasanikVue
 
   private static function _getRowSpanTd($value, $rowSpan, $isFirstColumn)
   {
-    $calcValue = $isFirstColumn
-      ? self::$firstColumn[$value]
-      : self::$secondColumn[$value];
     return self::_getOpenTr($isFirstColumn)
-      . '<td align="center"' . ($rowSpan > 1 ? ' rowspan="' . $rowSpan . '"' : '') . '>'
-      . $calcValue
+      . '<td align="center"'
+      . ($rowSpan > 1 ? ' rowspan="' . Html::encode($rowSpan) . '"' : '')
+      . '>'
+      . Html::encode($isFirstColumn
+        ? self::$firstColumn[$value]
+        : self::$secondColumn[$value])
       . self::$_closeTd;
   }
 
@@ -109,6 +119,8 @@ class ReasanikVue
     if (self::_getCount($key) > $counter) {
       return $openTr;
     }
+
+    return '';
   }
 
   private static function _getCount($key = '')
