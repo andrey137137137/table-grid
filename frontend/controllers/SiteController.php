@@ -67,10 +67,9 @@ class SiteController extends Controller
     //   }
     // }
 
-    return $this->render('vacancies', self::_getVacanciesVars(
-      ['key' => 'rank_id', 'model' => 'rank'],
-      ['key' => 'vessel_type_id', 'model' => 'vesselType']
-    ));
+    return $this->render('vacancies', self::_getVacanciesVars('rank',      'vesselType'));
+    // return $this->render('vacancies', self::_getVacanciesVars('vesselType',      'rank'));
+
 
     // $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
     // return $this->render('vacancies', compact('dataProvider'));
@@ -112,21 +111,22 @@ class SiteController extends Controller
 
   private static function _getVacanciesVars($first, $second)
   {
-    self::$_vacancieOrderKey = $first['key'];
+    self::$_vacancieOrderKey = self::_getAttrByRelationship($first);
+    $secondKey = self::_getAttrByRelationship($second);
     $query = Vacancie::find()
-      ->orderBy($first['key'])
-      // ->groupBy($second['key'])
+      ->orderBy(self::$_vacancieOrderKey)
+      // ->groupBy($secondKey)
       // ->asArray()
       ->all();
     $vacancies = ArrayHelper::index($query, 'build_year', [
       function ($element) {
         return $element[self::$_vacancieOrderKey];
       },
-      $second['key']
+      $secondKey
     ]);
 
-    $firstColumn = self::_getColumn($query, $first['model']);
-    $secondColumn = self::_getColumn($query, $second['model']);
+    $firstColumn = self::_getColumn($query, $first);
+    $secondColumn = self::_getColumn($query, $second);
     $counters = [];
 
     foreach ($vacancies as $firstId => $firstItems) {
@@ -149,6 +149,12 @@ class SiteController extends Controller
     }
 
     return compact('vacancies', 'firstColumn', 'secondColumn', 'counters');
+  }
+
+  private static function _getAttrByRelationship($relationship, $attr = 'id')
+  {
+    $result = preg_replace('/([A-Z])/', '_$1', $relationship);
+    return strtolower($result) . '_' . $attr;
   }
 
   private static function _getColumn($query, $model)
