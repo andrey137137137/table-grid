@@ -6,6 +6,7 @@ use frontend\ReasanikVue;
 
 // use yii\grid\GridView;
 // use kartik\grid\GridView;
+use yii\helpers\Json;
 
 $this->title = 'Vacancies';
 $this->params['breadcrumbs'][] = $this->title;
@@ -86,5 +87,8 @@ ReasanikVue::$counters = $counters;
       </table>
     </div>
   </div><!-- .entry-content -->
+  <script>
+    console.log(JSON.parse('<?= Json::encode($vacancies) ?>'));
+  </script>
 
 </article><!-- #post-<?= $this->title ?> -->

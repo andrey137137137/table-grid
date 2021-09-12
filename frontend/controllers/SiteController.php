@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 // use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use common\models\Vacancie;
 use frontend\models\ContactForm;
 
@@ -147,6 +148,9 @@ class SiteController extends Controller
         $counters[$firstId] = $counter;
       }
     }
+    // var_dump($vacancies);
+    // var_dump(Json::encode($vacancies));
+    // var_dump(json_last_error() == JSON_ERROR_NONE);
 
     return compact('vacancies', 'firstColumn', 'secondColumn', 'counters');
   }
