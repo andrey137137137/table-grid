@@ -10,12 +10,11 @@ use common\widgets\Alert;
 use yii\widgets\Menu;
 // <html lang="?= Yii::$app->language ?" class="js svg background-fixed">
 
-AppAsset::register($this);
-
 $isHomePage = $this->context->module->defaultRoute === $this->context->module->requestedRoute;
 
-?>
-<?php $this->beginPage() ?>
+AppAsset::register($this);
+
+$this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="ru-RU" class="js svg background-fixed">
 
