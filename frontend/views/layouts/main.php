@@ -46,12 +46,12 @@ $this->beginPage() ?>
 
             <div class="site-branding-text">
               <?php if ($isHomePage) : ?>
-                <h1 class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home">Elena</a></h1>
+                <h1 class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('app', 'Елена') ?></a></h1>
               <?php else : ?>
-                <p class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home">Elena</a></p>
+                <p class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('app', 'Елена') ?></a></p>
               <?php endif; ?>
 
-              <p class="site-description">CREW Odessa</p>
+              <p class="site-description"><?= Yii::t('app', 'Крюинг Одесса') ?></p>
             </div><!-- .site-branding-text -->
           </div><!-- .wrap -->
         </div><!-- .site-branding -->
@@ -68,10 +68,10 @@ $this->beginPage() ?>
             <div class="menu-main-container">
               <?php
               $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'Vacancies', 'url' => ['/site/vacancies']],
-                ['label' => 'About', 'url' => ['/site/about']],
-                ['label' => 'Contact', 'url' => ['/site/contact']],
+                ['label' => Yii::t('app', 'Главная'), 'url' => ['/site/index']],
+                ['label' => Yii::t('app', 'Вакансии'), 'url' => ['/site/vacancies']],
+                ['label' => Yii::t('app', 'О нас'), 'url' => ['/site/about']],
+                ['label' => Yii::t('app', 'Контакты'), 'url' => ['/site/contact']],
               ];
 
               echo Menu::widget([

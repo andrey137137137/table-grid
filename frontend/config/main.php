@@ -7,6 +7,7 @@ $params = array_merge(
 );
 
 return [
+  'sourceLanguage' => 'ru', // использован в качестве ключей переводов
   'id' => 'app-frontend',
   'basePath' => dirname(__DIR__),
   'homeUrl' => '/',
