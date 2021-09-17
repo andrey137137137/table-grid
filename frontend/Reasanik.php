@@ -3,8 +3,10 @@
 namespace frontend;
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
-class ReasanikVue
+class Reasanik
 {
   public static $firstColumn = [];
   public static $secondColumn = [];
@@ -17,6 +19,32 @@ class ReasanikVue
   private static $_secondColumnCounter = 0;
   private static $_openTd = '<td align="center">';
   private static $_closeTd = '</td>';
+
+  public static function getEncodeTrans($category, $message, $params = [], $language = null)
+  {
+    return Html::encode(\Yii::t($category, $message, $params, $language));
+  }
+
+  public static function renderActionLink($to, $actionParams, $isFirstColumn = true)
+  {
+    $params = $isFirstColumn
+      ? $actionParams
+      : [
+        'orderBy' => $actionParams['groupBy'],
+        'groupBy' => $actionParams['orderBy']
+      ];
+
+    echo '<a href="'
+      . Url::to(ArrayHelper::merge($to, $params))
+      . '">'
+      . self::_getActionTitle($params['orderBy'])
+      . '</a>';
+  }
+
+  private static function _getActionTitle($actionValue)
+  {
+    return $actionValue == 'rank' ? 'Rank' : 'Type of Vessel';
+  }
 
   public static function renderRowSpanTd($key, $value = false, $isFirstColumn = true)
   {

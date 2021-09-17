@@ -33,10 +33,16 @@ return [
   'components' => [
     'i18n' => [
       'translations' => [
-        'app' => [
+        // 'app' => [
+        '*' => [
           'class' => 'yii\i18n\PhpMessageSource',
           //'forceTranslation' => true,
-          'basePath' => '@common/messages',
+          'basePath' => '@frontend/messages',
+          // 'fileMap' => [
+          //   'app' => 'app.php',
+          //   'app/hjghjghj' => 'main.php',
+          //   'app/error' => 'error.php',
+          // ],
         ],
       ],
     ],

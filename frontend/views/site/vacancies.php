@@ -2,18 +2,19 @@
 
 /* @var $this yii\web\View */
 
-use frontend\ReasanikVue;
+use frontend\Reasanik;
 
 // use yii\grid\GridView;
 // use kartik\grid\GridView;
+use yii\helpers\Url;
 use yii\helpers\Json;
 
 $this->title = 'Vacancies';
 $this->params['breadcrumbs'][] = $this->title;
 
-ReasanikVue::$firstColumn = $firstColumn;
-ReasanikVue::$secondColumn = $secondColumn;
-ReasanikVue::$counters = $counters;
+Reasanik::$firstColumn = $firstColumn;
+Reasanik::$secondColumn = $secondColumn;
+Reasanik::$counters = $counters;
 
 ?>
 <article id="post-<?= $this->title ?>" class="post-<?= $this->title ?> page type-page status-publish hentry">
@@ -42,9 +43,12 @@ ReasanikVue::$counters = $counters;
       'showPageSummary' => false
     ]); ? -->
 
-    <?php foreach (ReasanikVue::$counters as $rsCounterId => $rsCounter) { ?>
+    <?php foreach (Reasanik::$counters as $rsCounterId => $rsCounter) { ?>
       <b><?= $rsCounterId ?></b> = <?= $rsCounter ?><br />
-    <?php } ?>
+    <?php }
+    var_dump($this->context->actionParams);
+    $actionParams = $this->context->actionParams;
+    ?>
 
     <br />
 
@@ -52,8 +56,12 @@ ReasanikVue::$counters = $counters;
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Rank</th>
-            <th>Type of Vessel </th>
+            <th>
+              <?php Reasanik::renderActionLink(['site/vacancies'], $actionParams); ?>
+            </th>
+            <th>
+              <?php Reasanik::renderActionLink(['site/vacancies'], $actionParams, false); ?>
+            </th>
             <th>Build Year</th>
             <th>Dwt</th>
             <th>Contract Duration</th>
@@ -64,22 +72,22 @@ ReasanikVue::$counters = $counters;
         <tbody>
           <?php
           foreach ($vacancies as $rankId => $topItems) :
-            ReasanikVue::renderRowSpanTd($rankId);
+            Reasanik::renderRowSpanTd($rankId);
 
             foreach ($topItems as $vesselTypeId => $bottomItems) :
-              ReasanikVue::renderRowSpanTd($rankId . '_' . $vesselTypeId, $vesselTypeId, false);
+              Reasanik::renderRowSpanTd($rankId . '_' . $vesselTypeId, $vesselTypeId, false);
 
               foreach ($bottomItems as $buildYear => $items) :
-                ReasanikVue::renderThirdTd($buildYear);
+                Reasanik::renderThirdTd($buildYear);
 
                 foreach ($items as $attr => $field) :
-                  ReasanikVue::renderTd($attr, $field);
+                  Reasanik::renderTd($attr, $field);
                 endforeach;
 
-                ReasanikVue::renderCloseTr();
+                Reasanik::renderCloseTr();
               endforeach;
 
-              ReasanikVue::decCounter();
+              Reasanik::decCounter();
             endforeach;
           endforeach;
           ?>

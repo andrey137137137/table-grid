@@ -46,12 +46,12 @@ $this->beginPage() ?>
 
             <div class="site-branding-text">
               <?php if ($isHomePage) : ?>
-                <h1 class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('app', 'Елена') ?></a></h1>
+                <h1 class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('main', 'Елена') ?></a></h1>
               <?php else : ?>
-                <p class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('app', 'Елена') ?></a></p>
+                <p class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('main', 'Елена') ?></a></p>
               <?php endif; ?>
 
-              <p class="site-description"><?= Yii::t('app', 'Крюинг Одесса') ?></p>
+              <p class="site-description"><?= Yii::t('main', 'Крюинг Одесса') ?></p>
             </div><!-- .site-branding-text -->
           </div><!-- .wrap -->
         </div><!-- .site-branding -->
@@ -65,22 +65,21 @@ $this->beginPage() ?>
                 <span></span>
               <?php endfor; ?>
             </button>
-            <div class="menu-main-container">
+            <div class="menu-main-container" style="display: flex; justify-content: space-between">
               <?php
-              $menuItems = [
-                ['label' => Yii::t('app', 'Главная'), 'url' => ['/site/index']],
-                ['label' => Yii::t('app', 'Вакансии'), 'url' => ['/site/vacancies']],
-                ['label' => Yii::t('app', 'О нас'), 'url' => ['/site/about']],
-                ['label' => Yii::t('app', 'Контакты'), 'url' => ['/site/contact']],
-              ];
-
               echo Menu::widget([
-                'items' => $menuItems,
+                'items' => [
+                  ['label' => Yii::t('main', 'Главная'), 'url' => ['/site/index']],
+                  ['label' => Yii::t('main', 'Вакансии'), 'url' => ['/site/vacancies']],
+                  ['label' => Yii::t('main', 'О нас'), 'url' => ['/site/about']],
+                  ['label' => Yii::t('main', 'Контакты'), 'url' => ['/site/contact']],
+                ],
                 'options' => ['id' => 'top-menu', 'class' => 'menu'],
                 'itemOptions' => ['class' => 'menu-item menu-item-type-custom menu-item-object-custom'],
                 'labelTemplate' => '<a aria-current="page" href="{url}">{label}</a>',
                 'activeCssClass' => 'current-menu-item current_page_item'
               ]);
+              echo common\modules\languages\widgets\ListWidget::widget();
               ?>
             </div><!-- .menu-main-container -->
           </nav><!-- #site-navigation -->
@@ -105,15 +104,14 @@ $this->beginPage() ?>
           <nav class="social-navigation" role="navigation" aria-label="Footer Social Links Menu">
             <div class="menu-socials-container">
               <?php
-              $socialItems = [
-                ['label' => '', 'url' => ['']],
-                ['label' => '', 'url' => ['']],
-                ['label' => '', 'url' => ['']],
-                ['label' => '', 'url' => ['']],
-                ['label' => '', 'url' => ['']],
-              ];
               echo Menu::widget([
-                'items' => $socialItems,
+                'items' => [
+                  ['label' => '', 'url' => ['']],
+                  ['label' => '', 'url' => ['']],
+                  ['label' => '', 'url' => ['']],
+                  ['label' => '', 'url' => ['']],
+                  ['label' => '', 'url' => ['']],
+                ],
                 'options' => ['id' => 'social', 'class' => 'social-links-menu'],
                 'itemOptions' => ['class' => 'menu-item menu-item-type-custom menu-item-object-custom'],
               ]);

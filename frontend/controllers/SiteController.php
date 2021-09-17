@@ -33,7 +33,7 @@ class SiteController extends Controller
    *
    * @return mixed
    */
-  public function actionVacancies()
+  public function actionVacancies($orderBy = 'rank', $groupBy = 'vesselType')
   {
     // $query = Vacancie::find()
     //   ->orderBy('rank_id')
@@ -68,7 +68,7 @@ class SiteController extends Controller
     //   }
     // }
 
-    return $this->render('vacancies', self::_getVacanciesVars('rank',      'vesselType'));
+    return $this->render('vacancies', self::_getVacanciesVars($orderBy,      $groupBy));
     // return $this->render('vacancies', self::_getVacanciesVars('vesselType',      'rank'));
 
 
