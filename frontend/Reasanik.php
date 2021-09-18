@@ -27,23 +27,59 @@ class Reasanik
 
   public static function renderActionLink($to, $actionParams, $isFirstColumn = true)
   {
-    $params = $isFirstColumn
-      ? $actionParams
-      : [
-        'orderBy' => $actionParams['groupBy'],
-        'groupBy' => $actionParams['orderBy']
-      ];
+    $params = self::_filterActionParams($actionParams, $isFirstColumn);
 
     echo '<a href="'
-      . Url::to(ArrayHelper::merge($to, $params))
+      . Url::to(ArrayHelper::merge([$to], $params))
       . '">'
-      . self::_getActionTitle($params['orderBy'])
+      . self::_getActionTitle($params['first'])
       . '</a>';
+  }
+
+  private static function _filterActionParams($params, $isFirstColumn = true)
+  {
+    $firstKey = 'first';
+    $secondKey = 'second';
+    $compFirstKey = $isFirstColumn ? $firstKey : $secondKey;
+    $compSecondKey = $isFirstColumn ? $secondKey : $firstKey;
+    $firstValue = $params[$compFirstKey];
+
+    return [
+      $firstKey => $isFirstColumn
+        ? self::_getInverseAction($firstValue)
+        : self::clearMinus($firstValue),
+      $secondKey => self::clearMinus($params[$compSecondKey])
+    ];
+  }
+
+  private static function _getInverseAction($attr)
+  {
+    return self::withMinus($attr) ? self::removeMinus($attr) : self::addMinus($attr);
   }
 
   private static function _getActionTitle($actionValue)
   {
-    return $actionValue == 'rank' ? 'Rank' : 'Type of Vessel';
+    return strpos($actionValue, 'rank') !== false ? 'Rank' : 'Type of Vessel';
+  }
+
+  public static function withMinus($attr)
+  {
+    return strpos($attr, '-') === 0;
+  }
+
+  public static function addMinus($attr)
+  {
+    return '-' . $attr;
+  }
+
+  public static function removeMinus($attr)
+  {
+    return substr_replace($attr, '', 0, 1);
+  }
+
+  public static function clearMinus($attr)
+  {
+    return self::withMinus($attr) ? self::removeMinus($attr) : $attr;
   }
 
   public static function renderRowSpanTd($key, $value = false, $isFirstColumn = true)

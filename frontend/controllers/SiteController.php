@@ -6,9 +6,10 @@ use Yii;
 use yii\web\Controller;
 // use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
+// use yii\helpers\Json;
 use common\models\Vacancie;
 use frontend\models\ContactForm;
+use frontend\Reasanik;
 
 /**
  * Site controller
@@ -16,7 +17,7 @@ use frontend\models\ContactForm;
 class SiteController extends Controller
 {
 
-  private static $_vacancieOrderKey = '';
+  private static $_vacancieOrderFirstKey = '';
 
   /**
    * Displays homepage.
@@ -33,7 +34,7 @@ class SiteController extends Controller
    *
    * @return mixed
    */
-  public function actionVacancies($orderBy = 'rank', $groupBy = 'vesselType')
+  public function actionVacancies($first = 'rank', $second = 'vesselType')
   {
     // $query = Vacancie::find()
     //   ->orderBy('rank_id')
@@ -68,9 +69,7 @@ class SiteController extends Controller
     //   }
     // }
 
-    return $this->render('vacancies', self::_getVacanciesVars($orderBy,      $groupBy));
-    // return $this->render('vacancies', self::_getVacanciesVars('vesselType',      'rank'));
-
+    return $this->render('vacancies', self::_getVacanciesVars($first, $second));
 
     // $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
     // return $this->render('vacancies', compact('dataProvider'));
@@ -112,16 +111,31 @@ class SiteController extends Controller
 
   private static function _getVacanciesVars($first, $second)
   {
-    self::$_vacancieOrderKey = self::_getAttrByRelationship($first);
-    $secondKey = self::_getAttrByRelationship($second);
+    // self::$_vacancieOrderFirstKey = self::_getAttrByRelationship($first);
+    // $secondKey = self::_getAttrByRelationship($second);
+
+    $orderArray = self::_getOrderArray([$first, $second]);
+    $attrCounter = 0;
+
+    foreach ($orderArray as $attr => $value) {
+      if (!$attrCounter) {
+        self::$_vacancieOrderFirstKey = $attr;
+      } else {
+        $secondKey = $attr;
+      }
+
+      $attrCounter++;
+    }
+    // var_dump(self::$_vacancieOrderFirstKey);
+    // var_dump($secondKey);
+
     $query = Vacancie::find()
-      ->orderBy(self::$_vacancieOrderKey)
-      // ->groupBy($secondKey)
-      // ->asArray()
+      // ->orderBy([self::$_vacancieOrderFirstKey => SORT_ASC, $secondKey => SORT_DESC])
+      ->orderBy($orderArray)
       ->all();
     $vacancies = ArrayHelper::index($query, 'build_year', [
       function ($element) {
-        return $element[self::$_vacancieOrderKey];
+        return $element[self::$_vacancieOrderFirstKey];
       },
       $secondKey
     ]);
@@ -163,6 +177,28 @@ class SiteController extends Controller
 
   private static function _getColumn($query, $model)
   {
-    return ArrayHelper::map($query, $model . '.id', $model . '.name');
+    $attr = Reasanik::clearMinus($model);
+    return ArrayHelper::map($query, $attr . '.id', $attr . '.name');
+  }
+
+  private static function _getOrderArray($attrs)
+  {
+    $result = [];
+    $tempAttr = '';
+    $tempOrder = SORT_ASC;
+
+    foreach ($attrs as $attr) {
+      $tempAttr = self::_getAttrByRelationship($attr);
+
+      if (Reasanik::withMinus($tempAttr)) {
+        $tempOrder = SORT_DESC;
+        $tempAttr = Reasanik::removeMinus($tempAttr);
+      }
+
+      $result[$tempAttr] = $tempOrder;
+      $tempOrder = SORT_ASC;
+    }
+
+    return $result;
   }
 }

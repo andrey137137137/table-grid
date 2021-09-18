@@ -6,11 +6,10 @@ use frontend\Reasanik;
 
 // use yii\grid\GridView;
 // use kartik\grid\GridView;
-use yii\helpers\Url;
+// use yii\helpers\Url;
 use yii\helpers\Json;
 
 $this->title = 'Vacancies';
-$this->params['breadcrumbs'][] = $this->title;
 
 Reasanik::$firstColumn = $firstColumn;
 Reasanik::$secondColumn = $secondColumn;
@@ -46,7 +45,8 @@ Reasanik::$counters = $counters;
     <?php foreach (Reasanik::$counters as $rsCounterId => $rsCounter) { ?>
       <b><?= $rsCounterId ?></b> = <?= $rsCounter ?><br />
     <?php }
-    var_dump($this->context->actionParams);
+    var_dump($this->context->route);
+    $route = $this->context->route;
     $actionParams = $this->context->actionParams;
     ?>
 
@@ -57,10 +57,10 @@ Reasanik::$counters = $counters;
         <thead>
           <tr>
             <th>
-              <?php Reasanik::renderActionLink(['site/vacancies'], $actionParams); ?>
+              <?php Reasanik::renderActionLink($route, $actionParams); ?>
             </th>
             <th>
-              <?php Reasanik::renderActionLink(['site/vacancies'], $actionParams, false); ?>
+              <?php Reasanik::renderActionLink($route, $actionParams, false); ?>
             </th>
             <th>Build Year</th>
             <th>Dwt</th>
