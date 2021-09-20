@@ -39,9 +39,11 @@ AppAsset::register($this);
     ]);
     $menuItems = [
       ['label' => 'Home', 'url' => ['/site/index']],
-      ['label' => 'Vacancie rank', 'url' => ['/vacancie-rank/index']],
-      ['label' => 'Vessel type', 'url' => ['/vessel-type/index']],
-      ['label' => 'Vacancie', 'url' => ['/vacancie/index']],
+      ['label' => 'Posts', 'url' => ['/post/index']],
+      ['label' => 'Language posts', 'url' => ['/lang-post/index']],
+      ['label' => 'Vacancie ranks', 'url' => ['/vacancie-rank/index']],
+      ['label' => 'Vessel types', 'url' => ['/vessel-type/index']],
+      ['label' => 'Vacancies', 'url' => ['/vacancie/index']],
       ['label' => 'Signup', 'url' => ['/site/signup']],
       '<li>'
         . Html::beginForm(['/site/logout'], 'post')

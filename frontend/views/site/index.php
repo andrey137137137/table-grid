@@ -2,11 +2,13 @@
 
 /* @var $this yii\web\View */
 
+use frontend\Reasanik;
+
 $this->title = 'home';
 ?>
 <article id="post-<?= $this->title ?>" class="post-<?= $this->title ?> page type-page status-publish hentry">
   <header class="entry-header">
-    <h1 class="entry-title"><?= Yii::t('main', 'Главная') ?></h1>
+    <h1 class="entry-title"><?= Reasanik::getEncodeTrans('main', 'Главная') ?></h1>
   </header><!-- .entry-header -->
 
   <div class="entry-content">

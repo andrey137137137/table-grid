@@ -14,7 +14,6 @@ use common\models\LoginForm;
 use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use backend\models\SignupForm;
-use backend\models\ContactForm;
 
 /**
  * Site controller

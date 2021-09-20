@@ -4,6 +4,7 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \frontend\models\ContactForm */
 
+use frontend\Reasanik;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 // use yii\captcha\Captcha;
@@ -12,7 +13,7 @@ $this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-contact">
-  <h1><?= Html::encode(Yii::t('main', 'Контакты')) ?></h1>
+  <h1><?= Reasanik::getEncodeTrans('main', 'Контакты') ?></h1>
 
   <p>
     If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.

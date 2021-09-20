@@ -116,17 +116,25 @@ class AppController extends Controller
   private function _renderView($model)
   {
     $view = $this->isCreateView ? 'create' : 'update';
-    $tempList = [];
     $lists = [];
 
-    foreach ($this->helperModels as $helperModel) {
-      $helperModelClass = $this->_getModelClass($helperModel);
+    foreach ($this->helperModels as $key => $value) {
+
+      if (is_string($key)) {
+        $helperModelName = $key;
+        $tempOrderField = $value;
+      } else {
+        $helperModelName = $value;
+        $tempOrderField = 'name';
+      }
+
+      $helperModelClass = $this->_getModelClass($helperModelName);
       $tempList = $helperModelClass::find()
-        ->select(['id', 'name'])
-        ->orderBy('name')
+        ->select(['id', $tempOrderField])
+        ->orderBy($tempOrderField)
         ->asArray()
         ->all();
-      $lists[$helperModel] = $this->_getArray($tempList, 'name', 'id');
+      $lists[$helperModelName] = $this->_getArray($tempList, $tempOrderField, 'id');
     }
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
