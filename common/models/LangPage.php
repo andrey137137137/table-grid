@@ -5,24 +5,24 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%lang_post}}".
+ * This is the model class for table "{{%lang_page}}".
  *
  * @property int $id
  * @property string $title
  * @property string $text
  * @property string $lang
- * @property int|null $post_id
+ * @property int|null $page_id
  *
- * @property Post $post
+ * @property Page $page
  */
-class LangPost extends \yii\db\ActiveRecord
+class LangPage extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%lang_post}}';
+        return '{{%lang_page}}';
     }
 
     /**
@@ -33,9 +33,9 @@ class LangPost extends \yii\db\ActiveRecord
         return [
             [['title', 'text', 'lang'], 'required'],
             [['text'], 'string'],
-            [['post_id'], 'integer'],
+            [['page_id'], 'integer'],
             [['title', 'lang'], 'string', 'max' => 255],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Post::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => Page::className(), 'targetAttribute' => ['page_id' => 'id']],
         ];
     }
 
@@ -49,17 +49,17 @@ class LangPost extends \yii\db\ActiveRecord
             'title' => Yii::t('app', 'Title'),
             'text' => Yii::t('app', 'Text'),
             'lang' => Yii::t('app', 'Lang'),
-            'post_id' => Yii::t('app', 'Post ID'),
+            'page_id' => Yii::t('app', 'Page ID'),
         ];
     }
 
     /**
-     * Gets query for [[Post]].
+     * Gets query for [[Page]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPost()
+    public function getPage()
     {
-        return $this->hasOne(Post::className(), ['id' => 'post_id']);
+        return $this->hasOne(Page::className(), ['id' => 'page_id']);
     }
 }

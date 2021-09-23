@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\LangPost */
+/* @var $model common\models\LangPage */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lang Posts'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lang Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="lang-post-view">
+<div class="lang-page-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'text:ntext',
             'lang',
-            'post_id',
+            'page_id',
         ],
     ]) ?>
 

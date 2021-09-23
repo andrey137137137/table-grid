@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\LangPost */
+/* @var $model common\models\Page */
 
-$this->title = Yii::t('app', 'Create Lang Post');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lang Posts'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Page');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="lang-post-create">
+<div class="page-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

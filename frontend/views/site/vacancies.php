@@ -13,6 +13,9 @@ $this->title = 'Vacancies';
 Reasanik::$firstColumn = $firstColumn;
 Reasanik::$secondColumn = $secondColumn;
 Reasanik::$counters = $counters;
+Reasanik::$actionParams = $this->context->actionParams;
+
+$route = $this->context->route;
 
 ?>
 <article id="post-<?= $this->title ?>" class="post-<?= $this->title ?> page type-page status-publish hentry">
@@ -40,26 +43,24 @@ Reasanik::$counters = $counters;
       ],
       'showPageSummary' => false
     ]); ? -->
+    <!-- 
+    ?php foreach (Reasanik::$counters as $rsCounterId => $rsCounter) { ?>
+      <b>?= $rsCounterId ?></b> = ?= $rsCounter ?><br />
+    ?php } ?>
 
-    <?php foreach (Reasanik::$counters as $rsCounterId => $rsCounter) { ?>
-      <b><?= $rsCounterId ?></b> = <?= $rsCounter ?><br />
-    <?php }
-    var_dump($this->context->route);
-    $route = $this->context->route;
-    $actionParams = $this->context->actionParams;
-    ?>
-
-    <br />
+    <br /> -->
 
     <div class="grid-view">
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
             <th>
-              <?php Reasanik::renderActionLink($route, $actionParams); ?>
+              <?php Reasanik::renderActionLink($route); ?>
             </th>
             <th>
-              <?php Reasanik::renderActionLink($route, $actionParams, false); ?>
+              <div style="display: flex; align-items: center; justify-content: space-between">
+                <?php Reasanik::renderActionLink($route, false); ?>
+              </div>
             </th>
             <th>Build Year</th>
             <th>Dwt</th>

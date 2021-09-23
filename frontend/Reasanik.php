@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 
 class Reasanik
 {
+  public static $actionParams = [];
   public static $firstColumn = [];
   public static $secondColumn = [];
   public static $counters = [];
@@ -19,36 +20,75 @@ class Reasanik
   private static $_secondColumnCounter = 0;
   private static $_openTd = '<td align="center">';
   private static $_closeTd = '</td>';
+  private static $_actionTitle = '';
 
   public static function getEncodeTrans($category, $message, $params = [], $language = null)
   {
     return Html::encode(\Yii::t($category, $message, $params, $language));
   }
 
-  public static function renderActionLink($to, $actionParams, $isFirstColumn = true)
+  public static function renderActionLink($to, $isFirstColumn = true)
   {
-    $params = self::_filterActionParams($actionParams, $isFirstColumn);
+    $url = self::_getActionUrl($to, $isFirstColumn);
+    echo Html::beginTag('a', ['href' => Url::to($url)])
+      . self::_getActionTitle()
+      . Html::endTag('a');
 
-    echo '<a href="'
-      . Url::to(ArrayHelper::merge([$to], $params))
-      . '">'
-      . self::_getActionTitle($params['first'])
-      . '</a>';
+    if (!$isFirstColumn) {
+      $options = [];
+
+      if (self::_isDescSorted()) {
+        $options['style'] = 'transform: rotate(180deg)';
+      }
+
+      $url = self::_getActionUrl($to, false, true);
+      echo Html::a('^', $url, $options);
+    }
   }
 
-  private static function _filterActionParams($params, $isFirstColumn = true)
+  private static function _isDescSorted()
   {
+    return self::$actionParams['sort'] == '-';
+  }
+
+  private static function _getActionUrl($to, $isFirstColumn, $isSortColumn = false)
+  {
+    $filterParams = self::_filterActionParams($isFirstColumn, $isSortColumn);
+    $addParams = [];
+
+    if (!$isSortColumn) {
+      self::$_actionTitle = $filterParams['first'];
+    }
+
+    if (($isFirstColumn && self::_isDescSorted())
+      || ($isSortColumn && !self::_isDescSorted())
+    ) {
+      $addParams['sort'] = '-';
+    }
+
+    return ArrayHelper::merge([$to], $filterParams, $addParams);
+  }
+
+  private static function _filterActionParams($isFirstColumn, $isSortColumn)
+  {
+    $cond = $isFirstColumn || $isSortColumn;
     $firstKey = 'first';
     $secondKey = 'second';
-    $compFirstKey = $isFirstColumn ? $firstKey : $secondKey;
-    $compSecondKey = $isFirstColumn ? $secondKey : $firstKey;
-    $firstValue = $params[$compFirstKey];
+    $firstValue = self::$actionParams[$cond ? $firstKey : $secondKey];
+
+    if ($isSortColumn) {
+      $firstCompValue = $firstValue;
+    } elseif ($isFirstColumn) {
+      $firstCompValue = self::_getInverseAction($firstValue);
+    } else {
+      $firstCompValue = self::clearMinus($firstValue);
+    }
+
+    $secondCompKey = $cond ? $secondKey : $firstKey;
 
     return [
-      $firstKey => $isFirstColumn
-        ? self::_getInverseAction($firstValue)
-        : self::clearMinus($firstValue),
-      $secondKey => self::clearMinus($params[$compSecondKey])
+      $firstKey => $firstCompValue,
+      $secondKey => self::clearMinus(self::$actionParams[$secondCompKey]),
     ];
   }
 
@@ -57,9 +97,9 @@ class Reasanik
     return self::withMinus($attr) ? self::removeMinus($attr) : self::addMinus($attr);
   }
 
-  private static function _getActionTitle($actionValue)
+  private static function _getActionTitle()
   {
-    return strpos($actionValue, 'rank') !== false ? 'Rank' : 'Type of Vessel';
+    return strpos(self::$_actionTitle, 'rank') !== false ? 'Rank' : 'Type of Vessel';
   }
 
   public static function withMinus($attr)

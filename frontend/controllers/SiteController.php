@@ -7,6 +7,7 @@ use yii\web\Controller;
 // use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 // use yii\helpers\Json;
+use common\models\Page;
 use common\models\Vacancie;
 use frontend\models\ContactForm;
 use frontend\Reasanik;
@@ -16,8 +17,17 @@ use frontend\Reasanik;
  */
 class SiteController extends Controller
 {
-
   private static $_vacancieOrderFirstKey = '';
+
+  public function actions()
+  {
+    return [
+      'page' => [
+        'class' => \yii\web\ViewAction::className(),
+        'viewPrefix' => 'lang/' . Yii::$app->language
+      ]
+    ];
+  }
 
   /**
    * Displays homepage.
@@ -26,7 +36,16 @@ class SiteController extends Controller
    */
   public function actionIndex()
   {
-    return $this->render('index');
+    $model = new Page();
+    //пост соответствующий переданному url
+    $page = $model->getPage('home');
+    //данные поста из связанной таблицы lang_post
+    $lang_data = $page->getDataPages();
+
+    return $this->render('index', [
+      'page' => $page,
+      'lang_data' => $lang_data,
+    ]);
   }
 
   /**
@@ -34,7 +53,7 @@ class SiteController extends Controller
    *
    * @return mixed
    */
-  public function actionVacancies($first = 'rank', $second = 'vesselType')
+  public function actionVacancies($first = 'rank', $second = 'vesselType', $sort = '')
   {
     // $query = Vacancie::find()
     //   ->orderBy('rank_id')
@@ -69,7 +88,7 @@ class SiteController extends Controller
     //   }
     // }
 
-    return $this->render('vacancies', self::_getVacanciesVars($first, $second));
+    return $this->render('vacancies', self::_getVacanciesVars($first, $second, $sort));
 
     // $dataProvider = new ActiveDataProvider(['query' => Vacancie::find()]);
     // return $this->render('vacancies', compact('dataProvider'));
@@ -109,22 +128,26 @@ class SiteController extends Controller
     return $this->render('about');
   }
 
-  private static function _getVacanciesVars($first, $second)
+  private static function _getVacanciesVars($first, $second, $sort)
   {
     // self::$_vacancieOrderFirstKey = self::_getAttrByRelationship($first);
     // $secondKey = self::_getAttrByRelationship($second);
 
+    if ($sort == '-') {
+      $second = $sort . $second;
+    }
+
     $orderArray = self::_getOrderArray([$first, $second]);
-    $attrCounter = 0;
+    $isFirstAttr = true;
 
     foreach ($orderArray as $attr => $value) {
-      if (!$attrCounter) {
+      if ($isFirstAttr) {
         self::$_vacancieOrderFirstKey = $attr;
       } else {
         $secondKey = $attr;
       }
 
-      $attrCounter++;
+      $isFirstAttr = false;
     }
     // var_dump(self::$_vacancieOrderFirstKey);
     // var_dump($secondKey);

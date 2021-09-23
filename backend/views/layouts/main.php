@@ -39,8 +39,8 @@ AppAsset::register($this);
     ]);
     $menuItems = [
       ['label' => 'Home', 'url' => ['/site/index']],
-      ['label' => 'Posts', 'url' => ['/post/index']],
-      ['label' => 'Language posts', 'url' => ['/lang-post/index']],
+      ['label' => 'Pages', 'url' => ['/page/index']],
+      ['label' => 'Language pages', 'url' => ['/lang-page/index']],
       ['label' => 'Vacancie ranks', 'url' => ['/vacancie-rank/index']],
       ['label' => 'Vessel types', 'url' => ['/vessel-type/index']],
       ['label' => 'Vacancies', 'url' => ['/vacancie/index']],
