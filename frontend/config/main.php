@@ -6,17 +6,18 @@ $params = array_merge(
   require(__DIR__ . '/params-local.php')
 );
 
+$Rs = new Reasanik;
+
 return [
   'sourceLanguage' => 'ru', // использован в качестве ключей переводов
   'id' => 'app-frontend',
   'basePath' => dirname(__DIR__),
   'homeUrl' => '/',
+  'controllerNamespace' => 'frontend\controllers',
   'bootstrap' => [
     'log',
     'languages'
   ],
-  'defaultRoute' => 'site/index',
-  'controllerNamespace' => 'frontend\controllers',
   'modules' => [
     'languages' => [
       'class' => 'common\modules\languages\Module',
@@ -86,15 +87,19 @@ return [
       'errorAction' => 'site/error',
     ],
     'urlManager' => [
-      'enablePrettyUrl' => true,
-      'showScriptName' => false,
       'class' => 'common\components\UrlManager',
       'rules' => [
-        'languages' => 'languages/default/index', //для модуля мультиязычности
+        //для модуля мультиязычности
+        'languages' => 'languages/default/index',
         //далее создаем обычные правила
-        '/' => 'site/index',
-        'contacts' => 'site/contact',
-        '<action:(about|vacancies)>' => 'site/<action>',
+        $Rs->vacanciesActionPtrn . '/'
+          . $Rs->vacancieFirstPtrn . '/'
+          . $Rs->vacancieSecondPtrn . '/'
+          . $Rs->vacancieSortPtrn => Reasanik::$defaultController,
+        $Rs->vacanciesActionPtrn . '/'
+          . $Rs->vacancieFirstPtrn . '/'
+          . $Rs->vacancieSecondPtrn => Reasanik::$defaultController,
+        $Rs->actionPtrn => Reasanik::$defaultController,
       ],
     ],
   ],

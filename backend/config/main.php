@@ -6,13 +6,14 @@ $params = array_merge(
   require(__DIR__ . '/params-local.php')
 );
 
+$Rs = new Reasanik;
+
 return [
   'id' => 'app-backend',
   'basePath' => dirname(__DIR__),
   'homeUrl' => '/admin',
-  'defaultRoute' => 'site/index',
   'controllerNamespace' => 'backend\controllers',
-  // 'bootstrap' => ['log'],
+  'bootstrap' => ['log'],
   'modules' => [
     'gridview' =>  [
       'class' => '\kartik\grid\Module'
@@ -45,9 +46,12 @@ return [
       'errorAction' => 'site/error',
     ],
     'urlManager' => [
-      'enablePrettyUrl' => true,
-      'showScriptName' => false,
-      'rules' => [],
+      'rules' => [
+        '<controller:' . $Rs->ctrlActionPtrn . '>/<id:\d+>/<action:(create|update|delete)>' => '<controller>/<action>',
+        '<controller:' . $Rs->ctrlActionPtrn . '>/<id:\d+>' => '<controller>/view',
+        '<controller:' . $Rs->ctrlActionPtrn . '>s' => '<controller>/index',
+        $Rs->actionPtrn => Reasanik::$defaultController,
+      ],
     ],
   ],
   'params' => $params,

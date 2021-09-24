@@ -37,36 +37,25 @@ AppAsset::register($this);
         'class' => 'navbar-inverse navbar-fixed-top',
       ],
     ]);
-    $menuItems = [
-      ['label' => 'Home', 'url' => ['/site/index']],
-      ['label' => 'Pages', 'url' => ['/page/index']],
-      ['label' => 'Language pages', 'url' => ['/lang-page/index']],
-      ['label' => 'Vacancie ranks', 'url' => ['/vacancie-rank/index']],
-      ['label' => 'Vessel types', 'url' => ['/vessel-type/index']],
-      ['label' => 'Vacancies', 'url' => ['/vacancie/index']],
-      ['label' => 'Signup', 'url' => ['/site/signup']],
-      '<li>'
-        . Html::beginForm(['/site/logout'], 'post')
-        . Html::submitButton(
-          'Logout (' . Yii::$app->user->identity->username . ')',
-          ['class' => 'btn btn-link logout']
-        )
-        . Html::endForm()
-        . '</li>'
-    ];
-
-    // $menuItems[] = '<li>'
-    //   . Html::beginForm(['/site/logout'], 'post')
-    //   . Html::submitButton(
-    //     'Logout (' . Yii::$app->user->identity->username . ')',
-    //     ['class' => 'btn btn-link logout']
-    //   )
-    //   . Html::endForm()
-    //   . '</li>';
-
     echo Nav::widget([
       'options' => ['class' => 'navbar-nav navbar-right'],
-      'items' => $menuItems,
+      'items' => [
+        ['label' => 'Home', 'url' => ['/']],
+        ['label' => 'Pages', 'url' => ['/pages']],
+        ['label' => 'Language pages', 'url' => ['/lang-pages']],
+        ['label' => 'Vacancie ranks', 'url' => ['/vacancie-ranks']],
+        ['label' => 'Vessel types', 'url' => ['/vessel-types']],
+        ['label' => 'Vacancies', 'url' => ['/vacancies']],
+        ['label' => 'Signup', 'url' => ['/signup']],
+        '<li>'
+          . Html::beginForm(['/logout'], 'post')
+          . Html::submitButton(
+            'Logout (' . Yii::$app->user->identity->username . ')',
+            ['class' => 'btn btn-link logout']
+          )
+          . Html::endForm()
+          . '</li>'
+      ],
     ]);
     NavBar::end();
     ?>

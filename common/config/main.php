@@ -5,6 +5,7 @@ return [
     '@npm'   => '@vendor/npm-asset',
   ],
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+  'defaultRoute' => Reasanik::$defaultRoute,
   // 'modules' => [
   //   'gridview' =>  [
   //     'class' => '\kartik\grid\Module'
@@ -13,6 +14,14 @@ return [
   'components' => [
     'cache' => [
       'class' => 'yii\caching\FileCache',
+    ],
+    'urlManager' => [
+      'enablePrettyUrl' => true,
+      'showScriptName' => false,
+      'enableStrictParsing' => false,
+      'rules' => [
+        '/' => Reasanik::$defaultRoute,
+      ],
     ],
   ],
 ];

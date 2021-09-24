@@ -99,7 +99,7 @@ class SiteController extends Controller
    *
    * @return mixed
    */
-  public function actionContact()
+  public function actionContacts()
   {
     $model = new ContactForm();
 

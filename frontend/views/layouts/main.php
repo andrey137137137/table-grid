@@ -46,9 +46,9 @@ $this->beginPage() ?>
 
             <div class="site-branding-text">
               <?php if ($isHomePage) : ?>
-                <h1 class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('main', 'Елена') ?></a></h1>
+                <h1 class="site-title"><a href="<?php echo Url::to(['/']); ?>" rel="home"><?= Yii::t('main', 'Елена') ?></a></h1>
               <?php else : ?>
-                <p class="site-title"><a href="<?php echo Url::to(['/site/index']); ?>" rel="home"><?= Yii::t('main', 'Елена') ?></a></p>
+                <p class="site-title"><a href="<?php echo Url::to(['/']); ?>" rel="home"><?= Yii::t('main', 'Елена') ?></a></p>
               <?php endif; ?>
 
               <p class="site-description"><?= Yii::t('main', 'Крюинг Одесса') ?></p>
@@ -69,10 +69,10 @@ $this->beginPage() ?>
               <?php
               echo Menu::widget([
                 'items' => [
-                  ['label' => Yii::t('main', 'Главная'), 'url' => ['/site/index']],
-                  ['label' => Yii::t('main', 'Вакансии'), 'url' => ['/site/vacancies']],
-                  ['label' => Yii::t('main', 'О нас'), 'url' => ['/site/about']],
-                  ['label' => Yii::t('main', 'Контакты'), 'url' => ['/site/contact']],
+                  ['label' => Yii::t('main', 'Главная'), 'url' => ['/']],
+                  ['label' => Yii::t('main', 'Вакансии'), 'url' => ['/vacancies']],
+                  ['label' => Yii::t('main', 'О нас'), 'url' => ['/about']],
+                  ['label' => Yii::t('main', 'Контакты'), 'url' => ['/contacts']],
                 ],
                 'options' => ['id' => 'top-menu', 'class' => 'menu'],
                 'itemOptions' => ['class' => 'menu-item menu-item-type-custom menu-item-object-custom'],
