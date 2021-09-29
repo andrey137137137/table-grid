@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%lang_page}}".
@@ -17,49 +18,61 @@ use Yii;
  */
 class LangPage extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return '{{%lang_page}}';
+  /**
+   * {@inheritdoc}
+   */
+  public static function tableName()
+  {
+    return '{{%lang_page}}';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function rules()
+  {
+    return [
+      [['title', 'text', 'lang'], 'required'],
+      [['text'], 'string'],
+      [['page_id'], 'integer'],
+      [['title', 'lang'], 'string', 'max' => 255],
+      [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => Page::className(), 'targetAttribute' => ['page_id' => 'id']],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function attributeLabels()
+  {
+    return [
+      'id' => Yii::t('app', 'ID'),
+      'title' => Yii::t('app', 'Title'),
+      'text' => Yii::t('app', 'Text'),
+      'lang' => Yii::t('app', 'Lang'),
+      'page_id' => Yii::t('app', 'Page ID'),
+    ];
+  }
+
+  /**
+   * Gets query for [[Page]].
+   *
+   * @return \yii\db\ActiveQuery
+   */
+  public function getPage()
+  {
+    return $this->hasOne(Page::className(), ['id' => 'page_id']);
+  }
+
+  public function beforeSave($insert)
+  {
+    if (!parent::beforeSave($insert)) {
+      return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            [['title', 'text', 'lang'], 'required'],
-            [['text'], 'string'],
-            [['page_id'], 'integer'],
-            [['title', 'lang'], 'string', 'max' => 255],
-            [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => Page::className(), 'targetAttribute' => ['page_id' => 'id']],
-        ];
-    }
+    $this->title = Html::encode($this->title);
+    // $this->text = Html::encode($this->text);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
-            'text' => Yii::t('app', 'Text'),
-            'lang' => Yii::t('app', 'Lang'),
-            'page_id' => Yii::t('app', 'Page ID'),
-        ];
-    }
-
-    /**
-     * Gets query for [[Page]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPage()
-    {
-        return $this->hasOne(Page::className(), ['id' => 'page_id']);
-    }
+    return true;
+  }
 }

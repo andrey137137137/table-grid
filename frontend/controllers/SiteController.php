@@ -36,13 +36,18 @@ class SiteController extends Controller
    */
   public function actionIndex()
   {
+    return $this->_getPageVars('home');
+  }
+
+  private function _getPageVars($url)
+  {
     $model = new Page();
     //пост соответствующий переданному url
-    $page = $model->getPage('home');
+    $page = $model->getPage($url);
     //данные поста из связанной таблицы lang_post
     $lang_data = $page->getDataPages();
 
-    return $this->render('index', [
+    return $this->render('page', [
       'page' => $page,
       'lang_data' => $lang_data,
     ]);
@@ -125,7 +130,7 @@ class SiteController extends Controller
    */
   public function actionAbout()
   {
-    return $this->render('about');
+    return $this->_getPageVars('about');
   }
 
   private static function _getVacanciesVars($first, $second, $sort)

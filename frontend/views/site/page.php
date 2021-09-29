@@ -10,9 +10,7 @@ $this->title = $lang_data->title;
   <header class="entry-header">
     <h1 class="entry-title"><?= Html::decode($this->title) ?></h1>
   </header><!-- .entry-header -->
-
   <div class="entry-content">
     <?= Html::decode($lang_data->text) ?>
   </div><!-- .entry-content -->
-
 </article><!-- #post-<?= $this->title ?> -->
